@@ -19,12 +19,12 @@ const App = () => {
   }, []);
 
   const fetchMatches = async () => {
-    const res = await axios.get('http://fifa-matches.vercel.app/api/matches');
+    const res = await axios.get('http://fifa-matches-results.onrender.com/api/matches');
     setMatches(res.data);
   };
 
   const fetchPlayers = async () => {
-    const res = await axios.get('http://fifa-matches.vercel.app/api/players');
+    const res = await axios.get('http://fifa-matches-results.onrender.com/api/players');
     setPlayers(res.data);
   };
 
@@ -41,7 +41,7 @@ const App = () => {
 
   const handlePlayerSubmit = async (e) => {
     e.preventDefault();
-    await axios.post('https://fifa-matches.vercel.app/api/players', { name: newPlayer });
+    await axios.post('http://fifa-matches-results.onrender.com/api/players', { name: newPlayer });
     setNewPlayer('');
     fetchPlayers();
   };
@@ -54,7 +54,7 @@ const App = () => {
       score1: Number(form.score1),
       score2: Number(form.score2)
     };
-    await axios.post('https://fifa-matches.vercel.app/api/matches', formData);
+    await axios.post('https://fifa-matches-results.onrender.com/api/matches', formData);
     setForm({
       player1: '',
       player2: '',
