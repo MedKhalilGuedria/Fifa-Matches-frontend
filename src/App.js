@@ -54,7 +54,7 @@ const App = () => {
       score1: Number(form.score1),
       score2: Number(form.score2)
     };
-    await axios.post('https://fifa-matches-results.onrender.com/api/matches', formData);
+    await axios.post('http://fifa-matches-results.onrender.com/api/matches', formData);
     setForm({
       player1: '',
       player2: '',
