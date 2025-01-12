@@ -203,7 +203,8 @@ h2 {
 @media (max-width: 992px) {
   .container {
     padding: 20px;
-    width:70%
+    width:60%;
+    margin-left: 160px;
   }
 
   h1, h2 {

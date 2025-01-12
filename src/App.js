@@ -25,7 +25,14 @@ const App = () => {
 
   const fetchPlayers = async () => {
     const res = await axios.get('https://fifa-matches-results.onrender.com/api/players');
-    setPlayers(res.data);
+    // Sort players by points, and if equal, by goal difference
+    const sortedPlayers = res.data.sort((a, b) => {
+      if (b.points === a.points) {
+        return (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst);
+      }
+      return b.points - a.points;
+    });
+    setPlayers(sortedPlayers);
   };
 
   const handleChange = (e) => {
