@@ -156,6 +156,9 @@ const App = () => {
           ))}
         </tbody>
       </table>
+      <div className="footer">
+      Developed by MKG &copy; {new Date().getFullYear()}
+    </div>
     </div>
   );
 };

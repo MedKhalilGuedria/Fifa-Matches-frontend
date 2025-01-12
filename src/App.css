@@ -17,6 +17,7 @@ body {
   width: 90%;
   max-width: 800px;
   box-sizing: border-box;
+  overflow-x: auto;
 }
 
 h1 {
@@ -73,6 +74,10 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
+}
+
+.table-container {
+  overflow-x: auto;
 }
 
 .table {
@@ -240,4 +245,12 @@ h2 {
     padding: 14px;
     font-size: 17px;
   }
+}
+
+/* Footer style */
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #333;
+  font-size: 14px;
 }
