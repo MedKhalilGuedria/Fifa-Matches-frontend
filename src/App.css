@@ -97,8 +97,17 @@ h2 {
 
 /* Responsive styles for small phones (max-width 480px) */
 @media (max-width: 480px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
   .container {
     padding: 10px;
+  }
+
+  h1, h2 {
+    font-size: 18px;
   }
 
   .input {
@@ -120,12 +129,34 @@ h2 {
     padding: 8px;
     font-size: 14px;
   }
+
+  .form {
+    gap: 5px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table th, .table td {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .table th {
+    display: none;
+  }
 }
 
-/* Responsive styles for medium phones (max-width 768px) */
+/* Responsive styles for medium phones and tablets (max-width 768px) */
 @media (max-width: 768px) {
   .container {
     padding: 15px;
+  }
+
+  h1, h2 {
+    font-size: 20px;
   }
 
   .input {
@@ -147,12 +178,25 @@ h2 {
     padding: 10px;
     font-size: 15px;
   }
+
+  .table {
+    font-size: 13px;
+  }
+
+  .table th, .table td {
+    display: table-cell;
+    text-align: center;
+  }
 }
 
-/* Responsive styles for large phones and small tablets (max-width 992px) */
+/* Responsive styles for tablets (max-width 992px) */
 @media (max-width: 992px) {
   .container {
     padding: 20px;
+  }
+
+  h1, h2 {
+    font-size: 22px;
   }
 
   .input {
@@ -176,18 +220,13 @@ h2 {
   }
 }
 
-/* Responsive styles for tablets (max-width 1200px) */
-@media (max-width: 1200px) {
+/* General improvements for tablets and larger devices */
+@media (min-width: 992px) {
   .container {
-    padding: 25px;
+    max-width: 800px;
   }
 
-  .input {
-    padding: 14px;
-    font-size: 17px;
-  }
-
-  .button {
+  .input, .button {
     padding: 14px;
     font-size: 17px;
   }
