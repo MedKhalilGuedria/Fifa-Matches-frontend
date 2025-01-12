@@ -17,7 +17,6 @@ body {
   width: 90%;
   max-width: 800px;
   box-sizing: border-box;
-  overflow-x: auto;
 }
 
 h1 {
@@ -77,12 +76,14 @@ h2 {
 }
 
 .table-container {
+  width: 100%;
   overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 .table th, .table td {
@@ -102,11 +103,6 @@ h2 {
 
 /* Responsive styles for small phones (max-width 480px) */
 @media (max-width: 480px) {
-  body {
-    flex-direction: column;
-    padding: 10px;
-  }
-
   .container {
     padding: 10px;
   }
@@ -139,6 +135,10 @@ h2 {
     gap: 5px;
   }
 
+  .table-container {
+    overflow-x: auto;
+  }
+
   .table {
     font-size: 12px;
   }
@@ -151,6 +151,11 @@ h2 {
 
   .table th {
     display: none;
+  }
+
+  .table tr {
+    display: block;
+    margin-bottom: 10px;
   }
 }
 

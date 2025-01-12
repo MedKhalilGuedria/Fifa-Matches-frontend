@@ -126,36 +126,38 @@ const App = () => {
         ))}
       </ul>
       <h2>Player Rankings</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Player</th>
-            <th>Matches</th>
-            <th>Wins</th>
-            <th>Draws</th>
-            <th>Losses</th>
-            <th>Goals For</th>
-            <th>Goals Against</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
+      <div className="table-container">
+    <table className="table">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Matches</th>
+          <th>Wins</th>
+          <th>Draws</th>
+          <th>Losses</th>
+          <th>Goals For</th>
+          <th>Goals Against</th>
+          <th>Goal Difference</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {players.map((player) => (
+          <tr key={player._id}>
+            <td>{player.name}</td>
+            <td>{player.matches}</td>
+            <td>{player.wins}</td>
+            <td>{player.draws}</td>
+            <td>{player.losses}</td>
+            <td>{player.goalsFor}</td>
+            <td>{player.goalsAgainst}</td>
+            <td>{player.goalsFor - player.goalsAgainst}</td>
+            <td>{player.points}</td>
           </tr>
-        </thead>
-        <tbody>
-          {players.map((player) => (
-            <tr key={player._id}>
-              <td>{player.name}</td>
-              <td>{player.matches}</td>
-              <td>{player.wins}</td>
-              <td>{player.draws}</td>
-              <td>{player.losses}</td>
-              <td>{player.goalsFor}</td>
-              <td>{player.goalsAgainst}</td>
-              <td>{player.goalsFor - player.goalsAgainst}</td>
-              <td>{player.points}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        ))}
+      </tbody>
+    </table>
+  </div>
       <div className="footer">
       Developed by MKG &copy; {new Date().getFullYear()}
     </div>
