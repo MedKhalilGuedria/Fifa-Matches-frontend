@@ -95,10 +95,10 @@ h2 {
   background: #f9f9f9;
 }
 
-/* Responsive styles */
-@media (max-width: 600px) {
+/* Responsive styles for small phones (max-width 480px) */
+@media (max-width: 480px) {
   .container {
-    padding: 15px;
+    padding: 10px;
   }
 
   .input {
@@ -113,11 +113,92 @@ h2 {
 
   .table th, .table td {
     padding: 8px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .list-item {
     padding: 8px;
     font-size: 14px;
+  }
+}
+
+/* Responsive styles for medium phones (max-width 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .input {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .button {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .table th, .table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .list-item {
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+
+/* Responsive styles for large phones and small tablets (max-width 992px) */
+@media (max-width: 992px) {
+  .container {
+    padding: 20px;
+  }
+
+  .input {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .button {
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .table th, .table td {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .list-item {
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+/* Responsive styles for tablets (max-width 1200px) */
+@media (max-width: 1200px) {
+  .container {
+    padding: 25px;
+  }
+
+  .input {
+    padding: 14px;
+    font-size: 17px;
+  }
+
+  .button {
+    padding: 14px;
+    font-size: 17px;
+  }
+
+  .table th, .table td {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .list-item {
+    padding: 14px;
+    font-size: 17px;
   }
 }
