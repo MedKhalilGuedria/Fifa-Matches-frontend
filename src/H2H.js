@@ -31,6 +31,7 @@ const H2H = () => {
       const res = await axios.get(
         `https://fifa-matches-results.onrender.com/api/h2h?player1=${player1}&player2=${player2}`
       );
+      console.log(res)
       setH2hResults(res.data);
     } catch (error) {
       console.error('Error fetching H2H results:', error);
