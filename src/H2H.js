@@ -31,7 +31,6 @@ const H2H = () => {
       const res = await axios.get(
         `https://fifa-matches-results.onrender.com/api/h2h?player1=${player1}&player2=${player2}`
       );
-      console.log(res)
       setH2hResults(res.data);
     } catch (error) {
       console.error('Error fetching H2H results:', error);
@@ -77,13 +76,21 @@ const H2H = () => {
         <div className="h2h-results">
           <h2>Results:</h2>
           <p>
-            {h2hResults.player1} vs {h2hResults.player2}
+            Head-to-Head: <strong>{player1}</strong> vs <strong>{player2}</strong>
           </p>
+          <p>Total Matches: {h2hResults.totalMatches}</p>
+          <p>{player1} Wins: {h2hResults.player1Wins}</p>
+          <p>{player2} Wins: {h2hResults.player2Wins}</p>
+          <p>Draws: {h2hResults.draws}</p>
+          <p>{player1} Goals: {h2hResults.player1Goals}</p>
+          <p>{player2} Goals: {h2hResults.player2Goals}</p>
+
+          <h3>Match History:</h3>
           <ul>
             {h2hResults.matches.map((match, index) => (
               <li key={index}>
-                {match.player1} {match.score1} - {match.score2} {match.player2} ({' '}
-                {new Date(match.date).toLocaleDateString()} )
+                {match.player1} {match.score1} - {match.score2} {match.player2} 
+                ({new Date(match.date).toLocaleDateString()})
               </li>
             ))}
           </ul>
