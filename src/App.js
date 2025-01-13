@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import H2H from './H2H';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
@@ -164,6 +165,7 @@ const App = () => {
         ))}
       </tbody>
     </table>
+    <H2H/>
   </div>
       <div className="footer">
       Developed by MKG &copy; {new Date().getFullYear()}

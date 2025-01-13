@@ -1,0 +1,72 @@
+/* H2H Page Container */
+.h2h-container {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f3f6fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading */
+  .h2h-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styling */
+  .h2h-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .h2h-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .h2h-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .h2h-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Results Table */
+  .h2h-results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .h2h-results-table th,
+  .h2h-results-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .h2h-results-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .h2h-results-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
