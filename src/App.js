@@ -4,7 +4,6 @@ import H2H from './H2H';
 import './App.css';
 
 const App = () => {
-  // State hooks
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
   const [year, setYear] = useState('overall'); // Default to "Overall"
@@ -16,21 +15,19 @@ const App = () => {
   });
   const [newPlayer, setNewPlayer] = useState('');
 
-  // Fetch matches and players whenever the year changes
+  const yearRange = Array.from({ length: 8 }, (_, i) => 2023 + i); // Generate years 2023-2030
+
   useEffect(() => {
     fetchMatchesAndPlayers();
   }, [year]);
 
-  // Fetch matches and players based on the selected year
   const fetchMatchesAndPlayers = async () => {
     try {
-      // Fetch matches filtered by year
       const matchResponse = await axios.get(
         `https://fifa-matches-results.onrender.com/api/matches?year=${year}`
       );
       setMatches(matchResponse.data);
 
-      // Fetch rankings dynamically based on the selected year
       const playerResponse = await axios.get(
         `https://fifa-matches-results.onrender.com/api/players?year=${year}`
       );
@@ -40,12 +37,10 @@ const App = () => {
     }
   };
 
-  // Handle year selection change
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
 
-  // Handle match form changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -54,12 +49,10 @@ const App = () => {
     }));
   };
 
-  // Handle new player name input change
   const handlePlayerChange = (e) => {
     setNewPlayer(e.target.value);
   };
 
-  // Submit a new match
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
@@ -82,7 +75,6 @@ const App = () => {
     }
   };
 
-  // Submit a new player
   const handlePlayerSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,7 +96,7 @@ const App = () => {
         <label htmlFor="year-select">Filter by Year:</label>
         <select id="year-select" value={year} onChange={handleYearChange}>
           <option value="overall">Overall</option>
-          {[...new Set(matches.map((match) => new Date(match.date).getFullYear()))].map((yr) => (
+          {yearRange.map((yr) => (
             <option key={yr} value={yr}>
               {yr}
             </option>
