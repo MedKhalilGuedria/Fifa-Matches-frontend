@@ -3,67 +3,107 @@ import axios from 'axios';
 import H2H from './H2H';
 import './App.css';
 
-
 const App = () => {
+  // State hooks
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
   const [year, setYear] = useState('overall'); // Default to "Overall"
+  const [form, setForm] = useState({
+    player1: '',
+    player2: '',
+    score1: '',
+    score2: '',
+  });
+  const [newPlayer, setNewPlayer] = useState('');
 
+  // Fetch matches and players whenever the year changes
   useEffect(() => {
     fetchMatchesAndPlayers();
-  }, [year]); // Refetch data when the year changes
+  }, [year]);
 
+  // Fetch matches and players based on the selected year
   const fetchMatchesAndPlayers = async () => {
     try {
       // Fetch matches filtered by year
-      const matchResponse = await axios.get(`https://fifa-matches-results.onrender.com/api/matches?year=${year}`);
+      const matchResponse = await axios.get(
+        `https://fifa-matches-results.onrender.com/api/matches?year=${year}`
+      );
       setMatches(matchResponse.data);
 
       // Fetch rankings dynamically based on the selected year
-      const playerResponse = await axios.get(`https://fifa-matches-results.onrender.com/api/players?year=${year}`);
+      const playerResponse = await axios.get(
+        `https://fifa-matches-results.onrender.com/api/players?year=${year}`
+      );
       setPlayers(playerResponse.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
+  // Handle year selection change
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
-  const handlePlayerSubmit = async (e) => {
-    e.preventDefault();
-    await axios.post('http://fifa-matches-results.onrender.com/api/players', { name: newPlayer });
-    setNewPlayer('');
-    fetchPlayers();
+
+  // Handle match form changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
   };
 
+  // Handle new player name input change
+  const handlePlayerChange = (e) => {
+    setNewPlayer(e.target.value);
+  };
+
+  // Submit a new match
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Ensure scores are numbers
     const formData = {
       ...form,
       score1: Number(form.score1),
-      score2: Number(form.score2)
+      score2: Number(form.score2),
     };
-    await axios.post('https://fifa-matches-results.onrender.com/api/matches', formData);
-    setForm({
-      player1: '',
-      player2: '',
-      score1: '',
-      score2: ''
-    });
-    fetchMatches();
-    fetchPlayers();
+
+    try {
+      await axios.post('https://fifa-matches-results.onrender.com/api/matches', formData);
+      setForm({
+        player1: '',
+        player2: '',
+        score1: '',
+        score2: '',
+      });
+      fetchMatchesAndPlayers();
+    } catch (error) {
+      console.error('Error adding match:', error);
+    }
+  };
+
+  // Submit a new player
+  const handlePlayerSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post('http://fifa-matches-results.onrender.com/api/players', { name: newPlayer });
+      setNewPlayer('');
+      fetchMatchesAndPlayers();
+    } catch (error) {
+      console.error('Error adding player:', error);
+    }
   };
 
   return (
     <div className="container">
       <h1>FIFA Match Results</h1>
+
+      {/* Year Filter */}
       <div className="year-filter">
         <label htmlFor="year-select">Filter by Year:</label>
         <select id="year-select" value={year} onChange={handleYearChange}>
           <option value="overall">Overall</option>
-          {/* Dynamically populate years from matches */}
           {[...new Set(matches.map((match) => new Date(match.date).getFullYear()))].map((yr) => (
             <option key={yr} value={yr}>
               {yr}
@@ -71,8 +111,17 @@ const App = () => {
           ))}
         </select>
       </div>
+
+      {/* Add Match Form */}
+      <h2>Add Match</h2>
       <form onSubmit={handleSubmit} className="form">
-        <select name="player1" value={form.player1} onChange={handleChange} required className="input">
+        <select
+          name="player1"
+          value={form.player1}
+          onChange={handleChange}
+          required
+          className="input"
+        >
           <option value="">Select Player 1</option>
           {players.map((player) => (
             <option key={player._id} value={player.name}>
@@ -80,7 +129,13 @@ const App = () => {
             </option>
           ))}
         </select>
-        <select name="player2" value={form.player2} onChange={handleChange} required className="input">
+        <select
+          name="player2"
+          value={form.player2}
+          onChange={handleChange}
+          required
+          className="input"
+        >
           <option value="">Select Player 2</option>
           {players.map((player) => (
             <option key={player._id} value={player.name}>
@@ -106,8 +161,12 @@ const App = () => {
           required
           className="input"
         />
-        <button type="submit" className="button">Add Match</button>
+        <button type="submit" className="button">
+          Add Match
+        </button>
       </form>
+
+      {/* Add Player Form */}
       <h2>Add New Player</h2>
       <form onSubmit={handlePlayerSubmit} className="form">
         <input
@@ -118,20 +177,23 @@ const App = () => {
           required
           className="input"
         />
-        <button type="submit" className="button">Add Player</button>
+        <button type="submit" className="button">
+          Add Player
+        </button>
       </form>
+
+      {/* Match History */}
       <h2>Match History</h2>
       <ul className="list">
         {matches.map((match) => (
           <li key={match._id} className="list-item">
-            {match.player1} vs {match.player2}: {match.score1} - {match.score2} on {new Date(match.date).toLocaleString()}
+            {match.player1} vs {match.player2}: {match.score1} - {match.score2} on{' '}
+            {new Date(match.date).toLocaleString()}
           </li>
         ))}
       </ul>
-      {/* Year Filter */}
-     
 
-      {/* Rankings */}
+      {/* Player Rankings */}
       <h2>Player Rankings</h2>
       <table className="table">
         <thead>
@@ -163,7 +225,9 @@ const App = () => {
           ))}
         </tbody>
       </table>
-      <H2H/>
+
+      {/* Head-to-Head Component */}
+      <H2H />
     </div>
   );
 };
