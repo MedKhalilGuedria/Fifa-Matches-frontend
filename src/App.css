@@ -75,26 +75,39 @@ h2 {
   margin-bottom: 10px;
 }
 
+
+
+
+
+
+
+
 .table-container {
-  width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  margin-top: 1rem;
+  border: 1px solid #ddd; /* Optional: border around the container */
+  border-radius: 5px; /* Optional: rounded corners */
 }
 
 .table {
-  width: 100%;
+  width: 100%; /* Ensure the table stretches to the container's width */
   border-collapse: collapse;
-  min-width: 600px;
+  text-align: left;
+  min-width: 800px; /* Set a minimum width if the table has many columns */
 }
 
-.table th, .table td {
+.table th,
+.table td {
   padding: 10px;
   border: 1px solid #ddd;
-  text-align: center;
 }
 
 .table th {
-  background: #f4f4f4;
-  color: #333;
+  background-color: #f4f4f4; /* Light gray background for the header */
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Add a light zebra striping effect */
 }
 
 .table tr:nth-child(even) {
