@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import H2H from './H2H';
-
 const App = () => {
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
-  const [year, setYear] = useState('overall'); // Default to "Overall"
+  const [year, setYear] = useState('overall'); // Default year selection
+  const [form, setForm] = useState({
+    player1: '',
+    player2: '',
+    score1: '',
+    score2: ''
+  });
+  const [newPlayer, setNewPlayer] = useState('');
 
   useEffect(() => {
-    fetchMatchesAndPlayers();
+    fetchMatches();
+    fetchPlayers();
   }, [year]); // Refetch data when the year changes
 
-  const fetchMatchesAndPlayers = async () => {
-    try {
-      // Fetch matches filtered by year
-      const matchResponse = await axios.get(`https://fifa-matches-results.onrender.com/api/matches?year=${year}`);
-      setMatches(matchResponse.data);
+  const fetchMatches = async () => {
+    const res = await axios.get(`https://fifa-matches-results.onrender.com/api/matches?year=${year}`);
+    setMatches(res.data);
+  };
 
-      // Fetch rankings dynamically based on the selected year
-      const playerResponse = await axios.get(`https://fifa-matches-results.onrender.com/api/players?year=${year}`);
-      setPlayers(playerResponse.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+  const fetchPlayers = async () => {
+    const res = await axios.get(`https://fifa-matches-results.onrender.com/api/players?year=${year}`);
+    const sortedPlayers = res.data.sort((a, b) => {
+      if (b.points === a.points) {
+        return (b.goalsFor - b.goalsAgainst) - (a.goalsFor - a.goalsAgainst);
+      }
+      return b.points - a.points;
+    });
+    setPlayers(sortedPlayers);
   };
 
   const handleYearChange = (e) => {
-    setYear(e.target.value);
+    setYear(e.target.value); // Update the selected year
   };
 
   return (
@@ -35,53 +41,53 @@ const App = () => {
 
       {/* Year Filter */}
       <div className="year-filter">
-        <label htmlFor="year-select">Filter by Year:</label>
-        <select id="year-select" value={year} onChange={handleYearChange}>
+        <label htmlFor="year-select">Filter by Year: </label>
+        <select id="year-select" value={year} onChange={handleYearChange} className="input">
           <option value="overall">Overall</option>
-          {/* Dynamically populate years from matches */}
-          {[...new Set(matches.map((match) => new Date(match.date).getFullYear()))].map((yr) => (
-            <option key={yr} value={yr}>
-              {yr}
+          {/* Dynamically generate years */}
+          {[...new Set(matches.map(match => new Date(match.date).getFullYear()))].map((year) => (
+            <option key={year} value={year}>
+              {year}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Rankings */}
+      {/* Other UI Elements */}
+      {/* Player Rankings, Matches, and Forms */}
       <h2>Player Rankings</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Player</th>
-            <th>Matches</th>
-            <th>Wins</th>
-            <th>Draws</th>
-            <th>Losses</th>
-            <th>Goals For</th>
-            <th>Goals Against</th>
-            <th>Goal Difference</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {players.map((player) => (
-            <tr key={player._id}>
-              <td>{player.name}</td>
-              <td>{player.matches}</td>
-              <td>{player.wins}</td>
-              <td>{player.draws}</td>
-              <td>{player.losses}</td>
-              <td>{player.goalsFor}</td>
-              <td>{player.goalsAgainst}</td>
-              <td>{player.goalsFor - player.goalsAgainst}</td>
-              <td>{player.points}</td>
+      <div className="table-container">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Matches</th>
+              <th>Wins</th>
+              <th>Draws</th>
+              <th>Losses</th>
+              <th>Goals For</th>
+              <th>Goals Against</th>
+              <th>Goal Difference</th>
+              <th>Points</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <H2H/>
+          </thead>
+          <tbody>
+            {players.map((player) => (
+              <tr key={player._id}>
+                <td>{player.name}</td>
+                <td>{player.matches}</td>
+                <td>{player.wins}</td>
+                <td>{player.draws}</td>
+                <td>{player.losses}</td>
+                <td>{player.goalsFor}</td>
+                <td>{player.goalsAgainst}</td>
+                <td>{player.goalsFor - player.goalsAgainst}</td>
+                <td>{player.points}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
-
-export default App;
