@@ -6,6 +6,7 @@ import H2H from './H2H';
 const App = () => {
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
+  const [year, setYear] = useState('overall'); // Default to overall
   const [form, setForm] = useState({
     player1: '',
     player2: '',
@@ -19,8 +20,10 @@ const App = () => {
     fetchPlayers();
   }, []);
 
-  const fetchMatches = async () => {
-    const res = await axios.get('https://fifa-matches-results.onrender.com/api/matches');
+  const fetchMatches = async (selectedYear = 'overall') => {
+    const res = await axios.get(`https://fifa-matches-results.onrender.com/api/matches`, {
+      params: { year: selectedYear },
+    });
     setMatches(res.data);
   };
 
@@ -35,7 +38,10 @@ const App = () => {
     });
     setPlayers(sortedPlayers);
   };
-
+  const handleYearChange = (e) => {
+    setYear(e.target.value);
+    fetchMatches(e.target.value);
+  };
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -76,6 +82,20 @@ const App = () => {
   return (
     <div className="container">
       <h1>FIFA Match Results</h1>
+      <div className="year-filter">
+  <label htmlFor="year">Filter by Year: </label>
+  <select id="year" value={year} onChange={handleYearChange} className="input">
+    <option value="overall">Overall</option>
+    {Array.from({ length: 10 }, (_, i) => {
+      const currentYear = new Date().getFullYear() - i;
+      return (
+        <option key={currentYear} value={currentYear}>
+          {currentYear}
+        </option>
+      );
+    })}
+  </select>
+</div>
       <form onSubmit={handleSubmit} className="form">
         <select name="player1" value={form.player1} onChange={handleChange} required className="input">
           <option value="">Select Player 1</option>
