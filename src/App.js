@@ -79,7 +79,7 @@ const App = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://fifa-matches-results.onrender.com/api/players', { name: newPlayer });
+      await axios.post('https://fifa-matches-results.onrender.com/api/players', { name: newPlayer });
       setNewPlayer('');
       fetchMatchesAndPlayers();
     } catch (error) {
