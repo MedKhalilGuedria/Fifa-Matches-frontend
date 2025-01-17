@@ -23,6 +23,7 @@ const CompetitionManager = () => {
     try {
       const response = await axios.get("https://fifa-matches-results.onrender.com/api/competitions");
       setCompetitions(response.data);
+      console.log(response)
       if (response.data.length > 0) {
         setSelectedCompetition(response.data[0]); // Automatically select the first competition
         setPlayers(response.data[0].players);
@@ -35,6 +36,8 @@ const CompetitionManager = () => {
 
   const handleCompetitionSelect = (competition) => {
     setSelectedCompetition(competition);
+    console.log(competition)
+
     setPlayers(competition.players);
     setMatches(competition.matches);
   };
