@@ -46,7 +46,7 @@ const CompetitionManager = () => {
     }
 
     try {
-      const response = await axios.post("/api/competitions", { name: newCompetition });
+      const response = await axios.post("https://fifa-matches-results.onrender.com/api/competitions", { name: newCompetition });
       const newCompetitions = [...competitions, response.data];
       setCompetitions(newCompetitions);
       setNewCompetition("");
