@@ -247,7 +247,7 @@ h2 {
 /* General improvements for tablets and larger devices */
 @media (min-width: 992px) {
   .container {
-    max-width: 800px;
+    max-width: 2000px;
   }
 
   .input, .button {
