@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import H2H from './H2H';
 import './App.css';
-import CompetitionManager from './CompetitionManager';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
@@ -223,7 +222,6 @@ const App = () => {
 
       {/* Head-to-Head Component */}
       <H2H />
-      <CompetitionManager/>
     </div>
   );
 };
