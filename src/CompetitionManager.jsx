@@ -13,6 +13,7 @@ const CompetitionManager = () => {
     score1: 0,
     score2: 0,
   });
+  const [newCompetition, setNewCompetition] = useState("");
 
   useEffect(() => {
     fetchCompetitions();
@@ -20,7 +21,7 @@ const CompetitionManager = () => {
 
   const fetchCompetitions = async () => {
     try {
-      const response = await axios.get("https://fifa-matches-results.onrender.com/api/competitions");
+      const response = await axios.get("/api/competitions");
       setCompetitions(response.data);
     } catch (error) {
       console.error("Error fetching competitions", error);
@@ -33,8 +34,23 @@ const CompetitionManager = () => {
     setMatches(competition.matches);
   };
 
+  const createCompetition = async () => {
+    if (!newCompetition.trim()) {
+      alert("Competition name cannot be empty.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("https://fifa-matches-results.onrender.com/api/competitions", { name: newCompetition });
+      setCompetitions([...competitions, response.data]);
+      setNewCompetition("");
+    } catch (error) {
+      console.error("Error creating competition", error);
+    }
+  };
+
   const addPlayer = async () => {
-    if (!newPlayer) return;
+    if (!newPlayer.trim()) return;
 
     try {
       const response = await axios.post(
@@ -70,6 +86,18 @@ const CompetitionManager = () => {
   return (
     <div>
       <h1>Competition Manager</h1>
+
+      {/* Create Competition */}
+      <div>
+        <h2>Create Competition</h2>
+        <input
+          type="text"
+          value={newCompetition}
+          onChange={(e) => setNewCompetition(e.target.value)}
+          placeholder="Competition Name"
+        />
+        <button onClick={createCompetition}>Create Competition</button>
+      </div>
 
       {/* Competition List */}
       <div>
