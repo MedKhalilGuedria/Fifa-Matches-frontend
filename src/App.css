@@ -1,6 +1,6 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 0;
   display: flex;
@@ -10,266 +10,149 @@ body {
 }
 
 .container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 1300px;
+  max-width: 1200px;
   box-sizing: border-box;
 }
 
-h1 {
+h1, h2 {
   text-align: center;
   color: #333;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 30px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .button {
-  padding: 10px;
-  font-size: 16px;
-  color: #fff;
-  background: #28a745;
+  padding: 12px;
+  font-size: 1rem;
+  color: #ffffff;
+  background: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out;
 }
 
 .button:hover {
-  background: #218838;
-}
-
-h2 {
-  color: #333;
-  margin-top: 0;
+  background: #0056b3;
 }
 
 .list {
   list-style: none;
   padding: 0;
   margin: 0;
-  margin-bottom: 20px;
 }
 
 .list-item {
   background: #f9f9f9;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
 }
 
-
-
-
-
-
-
-
+/* Table Styles */
 .table-container {
-  margin-top: 1rem;
-  border: 1px solid #ddd; /* Optional: border around the container */
-  border-radius: 5px; /* Optional: rounded corners */
+  margin-top: 20px;
+  border-radius: 6px;
+  overflow-x: auto;
 }
 
 .table {
-  width: 100%; /* Ensure the table stretches to the container's width */
+  width: 100%;
   border-collapse: collapse;
-  text-align: left;
-  min-width: 800px; /* Set a minimum width if the table has many columns */
+  min-width: 600px;
 }
 
-.table th,
-.table td {
-  padding: 10px;
+.table th, .table td {
+  padding: 12px;
   border: 1px solid #ddd;
+  text-align: left;
 }
 
 .table th {
-  background-color: #f4f4f4; /* Light gray background for the header */
+  background-color: #f0f2f5;
+  font-weight: bold;
 }
 
 .table tr:nth-child(even) {
-  background-color: #f9f9f9; /* Add a light zebra striping effect */
+  background-color: #f9f9f9;
 }
 
-.table tr:nth-child(even) {
-  background: #f9f9f9;
+/* Footer */
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
 }
 
-/* Responsive styles for small phones (max-width 480px) */
-@media (max-width: 480px) {
-  .container {
-    padding: 10px;
-  }
-
-  h1, h2 {
-    font-size: 18px;
-  }
-
-  .input {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .button {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .table th, .table td {
-    padding: 8px;
-    font-size: 12px;
-  }
-
-  .list-item {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .form {
-    gap: 5px;
-  }
-
-  .table-container {
-    overflow-x: auto;
-  }
-
-  .table {
-    font-size: 12px;
-  }
-
-  .table th, .table td {
-    display: block;
-    width: 100%;
-    text-align: left;
-  }
-
-  .table th {
-    display: none;
-  }
-
-  .table tr {
-    display: block;
-    margin-bottom: 10px;
-  }
-}
-
-/* Responsive styles for medium phones and tablets (max-width 768px) */
+/* Responsive Styles */
 @media (max-width: 768px) {
-  .container {
-    padding: 15px;
-  }
-
   h1, h2 {
-    font-size: 20px;
-  }
-
-  .input {
-    padding: 10px;
-    font-size: 15px;
-  }
-
-  .button {
-    padding: 10px;
-    font-size: 15px;
-  }
-
-  .table th, .table td {
-    padding: 10px;
-    font-size: 13px;
-  }
-
-  .list-item {
-    padding: 10px;
-    font-size: 15px;
-  }
-
-  .table {
-    font-size: 13px;
-  }
-
-  .table th, .table td {
-    display: table-cell;
-    text-align: center;
-  }
-}
-
-/* Responsive styles for tablets (max-width 992px) */
-@media (max-width: 992px) {
-  .container {
-    padding: 20px;
-    width:60%;
-    margin-left: 280px;
-  }
-
-  h1, h2 {
-    font-size: 22px;
-  }
-
-  .input {
-    padding: 12px;
-    font-size: 16px;
-  }
-
-  .button {
-    padding: 12px;
-    font-size: 16px;
-  }
-
-  .table th, .table td {
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .list-item {
-    padding: 12px;
-    font-size: 16px;
-  }
-}
-
-/* General improvements for tablets and larger devices */
-@media (min-width: 992px) {
-  .container {
-    max-width: 2000px;
+    font-size: 1.5rem;
   }
 
   .input, .button {
-    padding: 14px;
-    font-size: 17px;
+    font-size: 0.9rem;
   }
 
   .table th, .table td {
-    padding: 14px;
-    font-size: 15px;
+    font-size: 0.9rem;
+    padding: 10px;
   }
 
   .list-item {
-    padding: 14px;
-    font-size: 17px;
+    font-size: 0.9rem;
+    padding: 10px;
   }
 }
 
-/* Footer style */
-.footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #333;
-  font-size: 14px;
+@media (max-width: 480px) {
+  h1, h2 {
+    font-size: 1.2rem;
+  }
+
+  .input, .button {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+
+  .table th, .table td {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+
+  .list-item {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
 }
