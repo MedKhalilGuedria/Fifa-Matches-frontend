@@ -21,8 +21,13 @@ const CompetitionManager = () => {
 
   const fetchCompetitions = async () => {
     try {
-      const response = await axios.get("/api/competitions");
+      const response = await axios.get("https://fifa-matches-results.onrender.com/api/competitions");
       setCompetitions(response.data);
+      if (response.data.length > 0) {
+        setSelectedCompetition(response.data[0]); // Automatically select the first competition
+        setPlayers(response.data[0].players);
+        setMatches(response.data[0].matches);
+      }
     } catch (error) {
       console.error("Error fetching competitions", error);
     }
@@ -41,9 +46,15 @@ const CompetitionManager = () => {
     }
 
     try {
-      const response = await axios.post("https://fifa-matches-results.onrender.com/api/competitions", { name: newCompetition });
-      setCompetitions([...competitions, response.data]);
+      const response = await axios.post("/api/competitions", { name: newCompetition });
+      const newCompetitions = [...competitions, response.data];
+      setCompetitions(newCompetitions);
       setNewCompetition("");
+
+      // Auto-select the newly created competition
+      setSelectedCompetition(response.data);
+      setPlayers(response.data.players || []);
+      setMatches(response.data.matches || []);
     } catch (error) {
       console.error("Error creating competition", error);
     }
@@ -102,21 +113,25 @@ const CompetitionManager = () => {
       {/* Competition List */}
       <div>
         <h2>Competitions</h2>
-        {competitions.map((comp) => (
-          <button
-            key={comp._id}
-            onClick={() => handleCompetitionSelect(comp)}
-            style={{
-              margin: "5px",
-              backgroundColor: selectedCompetition?._id === comp._id ? "lightblue" : "white",
-            }}
-          >
-            {comp.name}
-          </button>
-        ))}
+        {competitions.length === 0 ? (
+          <p>No competitions available. Create one to get started!</p>
+        ) : (
+          competitions.map((comp) => (
+            <button
+              key={comp._id}
+              onClick={() => handleCompetitionSelect(comp)}
+              style={{
+                margin: "5px",
+                backgroundColor: selectedCompetition?._id === comp._id ? "lightblue" : "white",
+              }}
+            >
+              {comp.name}
+            </button>
+          ))
+        )}
       </div>
 
-      {selectedCompetition && (
+      {selectedCompetition ? (
         <>
           {/* Rankings */}
           <div>
@@ -209,6 +224,8 @@ const CompetitionManager = () => {
             <button onClick={addMatch}>Add Match</button>
           </div>
         </>
+      ) : (
+        <p>Please create or select a competition to manage players and matches.</p>
       )}
     </div>
   );
