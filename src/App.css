@@ -83,7 +83,6 @@ h2 {
 
 
 .table-container {
-  overflow-x: auto; /* Allow horizontal scrolling if needed */
   margin-top: 1rem;
   border: 1px solid #ddd; /* Optional: border around the container */
   border-radius: 5px; /* Optional: rounded corners */
