@@ -134,95 +134,86 @@ const CompetitionManager = () => {
       {selectedCompetition ? (
         <>
           {/* Rankings */}
-          <div>
-            <h2>Rankings for {selectedCompetition.name}</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Player</th>
-                  <th>Matches</th>
-                  <th>Wins</th>
-                  <th>Draws</th>
-                  <th>Losses</th>
-                  <th>Goals For</th>
-                  <th>Goals Against</th>
-                  <th>Goal Difference</th>
-                  <th>Points</th>
-                </tr>
-              </thead>
-              <tbody>
-                {players
-                  .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor)
-                  .map((player, index) => (
+          <div className="rankings-table-container">
+    <h2>Rankings for {selectedCompetition.name}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Player</th>
+                <th>Matches</th>
+                <th>Wins</th>
+                <th>Draws</th>
+                <th>Losses</th>
+                <th>Goals For</th>
+                <th>Goals Against</th>
+                <th>Goal Difference</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {players
+                .sort((a, b) => b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor)
+                .map((player, index) => (
                     <tr key={player._id}>
-                      <td>{index + 1}</td>
-                      <td>{player.name}</td>
-                      <td>{player.matches}</td>
-                      <td>{player.wins}</td>
-                      <td>{player.draws}</td>
-                      <td>{player.losses}</td>
-                      <td>{player.goalsFor}</td>
-                      <td>{player.goalsAgainst}</td>
-                      <td>{player.goalsFor - player.goalsAgainst}</td>
-                      <td>{player.points}</td>
+                        <td>{index + 1}</td>
+                        <td>{player.name}</td>
+                        <td>{player.matches}</td>
+                        <td>{player.wins}</td>
+                        <td>{player.draws}</td>
+                        <td>{player.losses}</td>
+                        <td>{player.goalsFor}</td>
+                        <td>{player.goalsAgainst}</td>
+                        <td>{player.goalsFor - player.goalsAgainst}</td>
+                        <td>{player.points}</td>
                     </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
+                ))}
+        </tbody>
+    </table>
+</div>
 
           {/* Add Player */}
-          <div>
-            <h2>Add Player</h2>
-            <input
-              type="text"
-              value={newPlayer}
-              onChange={(e) => setNewPlayer(e.target.value)}
-              placeholder="Player Name"
-            />
-            <button onClick={addPlayer}>Add</button>
-          </div>
+          <div className="add-match-container">
+    <h2>Add Match</h2>
+    <div>
+        <select
+            value={matchDetails.player1Id}
+            onChange={(e) => setMatchDetails({ ...matchDetails, player1Id: e.target.value })}
+        >
+            <option value="">Select Player 1</option>
+            {players.map((player) => (
+                <option key={player._id} value={player._id}>
+                    {player.name}
+                </option>
+            ))}
+        </select>
+        <select
+            value={matchDetails.player2Id}
+            onChange={(e) => setMatchDetails({ ...matchDetails, player2Id: e.target.value })}
+        >
+            <option value="">Select Player 2</option>
+            {players.map((player) => (
+                <option key={player._id} value={player._id}>
+                    {player.name}
+                </option>
+            ))}
+        </select>
+        <input
+            type="number"
+            value={matchDetails.score1}
+            onChange={(e) => setMatchDetails({ ...matchDetails, score1: +e.target.value })}
+            placeholder="Player 1 Score"
+        />
+        <input
+            type="number"
+            value={matchDetails.score2}
+            onChange={(e) => setMatchDetails({ ...matchDetails, score2: +e.target.value })}
+            placeholder="Player 2 Score"
+        />
+        <button onClick={addMatch}>Add Match</button>
+    </div>
+</div>
 
-          {/* Add Match */}
-          <div>
-            <h2>Add Match</h2>
-            <select
-              value={matchDetails.player1Id}
-              onChange={(e) => setMatchDetails({ ...matchDetails, player1Id: e.target.value })}
-            >
-              <option value="">Select Player 1</option>
-              {players.map((player) => (
-                <option key={player._id} value={player._id}>
-                  {player.name}
-                </option>
-              ))}
-            </select>
-            <select
-              value={matchDetails.player2Id}
-              onChange={(e) => setMatchDetails({ ...matchDetails, player2Id: e.target.value })}
-            >
-              <option value="">Select Player 2</option>
-              {players.map((player) => (
-                <option key={player._id} value={player._id}>
-                  {player.name}
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              value={matchDetails.score1}
-              onChange={(e) => setMatchDetails({ ...matchDetails, score1: +e.target.value })}
-              placeholder="Player 1 Score"
-            />
-            <input
-              type="number"
-              value={matchDetails.score2}
-              onChange={(e) => setMatchDetails({ ...matchDetails, score2: +e.target.value })}
-              placeholder="Player 2 Score"
-            />
-            <button onClick={addMatch}>Add Match</button>
-          </div>
         </>
       ) : (
         <p>Please create or select a competition to manage players and matches.</p>
