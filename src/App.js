@@ -188,8 +188,8 @@ const App = () => {
 
       {/* Player Rankings */}
       <h2>Player Rankings</h2>
-      <div className="table-container">
-  <table className="table">
+      <div className="rankings-table-container">
+  <table >
     <thead>
       <tr>
         <th>Player</th>
