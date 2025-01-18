@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import './comp.css'
 
 const CompetitionManager = () => {
   const [competitions, setCompetitions] = useState([]);
@@ -23,9 +24,8 @@ const CompetitionManager = () => {
     try {
       const response = await axios.get("https://fifa-matches-results.onrender.com/api/competitions");
       setCompetitions(response.data);
-      console.log(response)
       if (response.data.length > 0) {
-        setSelectedCompetition(response.data[0]); // Automatically select the first competition
+        setSelectedCompetition(response.data[0]);
         setPlayers(response.data[0].players);
         setMatches(response.data[0].matches);
       }
@@ -36,8 +36,6 @@ const CompetitionManager = () => {
 
   const handleCompetitionSelect = (competition) => {
     setSelectedCompetition(competition);
-    console.log(competition)
-
     setPlayers(competition.players);
     setMatches(competition.matches);
   };
@@ -50,11 +48,9 @@ const CompetitionManager = () => {
 
     try {
       const response = await axios.post("https://fifa-matches-results.onrender.com/api/competitions", { name: newCompetition });
-      const newCompetitions = [...competitions, response.data];
-      setCompetitions(newCompetitions);
+      setCompetitions([...competitions, response.data]);
       setNewCompetition("");
 
-      // Auto-select the newly created competition
       setSelectedCompetition(response.data);
       setPlayers(response.data.players || []);
       setMatches(response.data.matches || []);
@@ -90,7 +86,7 @@ const CompetitionManager = () => {
         `https://fifa-matches-results.onrender.com/api/competitions/${selectedCompetition._id}/matches`,
         { player1Id, player2Id, score1, score2 }
       );
-      fetchCompetitions(); // Refresh data to update rankings
+      fetchCompetitions();
       setMatchDetails({ player1Id: "", player2Id: "", score1: 0, score2: 0 });
     } catch (error) {
       console.error("Error adding match", error);
@@ -102,7 +98,7 @@ const CompetitionManager = () => {
       <h1>Competition Manager</h1>
 
       {/* Create Competition */}
-      <div>
+      <div className="create-competition">
         <h2>Create Competition</h2>
         <input
           type="text"
@@ -114,23 +110,24 @@ const CompetitionManager = () => {
       </div>
 
       {/* Competition List */}
-      <div>
+      <div className="competitions-list">
         <h2>Competitions</h2>
         {competitions.length === 0 ? (
           <p>No competitions available. Create one to get started!</p>
         ) : (
-          competitions.map((comp) => (
-            <button
-              key={comp._id}
-              onClick={() => handleCompetitionSelect(comp)}
-              style={{
-                margin: "5px",
-                backgroundColor: selectedCompetition?._id === comp._id ? "lightblue" : "white",
-              }}
-            >
-              {comp.name}
-            </button>
-          ))
+          <div className="competitions-cards">
+            {competitions.map((comp) => (
+              <div
+                key={comp._id}
+                className={`competition-card ${selectedCompetition?._id === comp._id ? "active" : ""}`}
+                onClick={() => handleCompetitionSelect(comp)}
+              >
+                <h3>{comp.name}</h3>
+                <p>{comp.players.length} Players</p>
+                <p>{comp.matches.length} Matches</p>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

@@ -1,0 +1,54 @@
+/* Style for Create Competition */
+.create-competition {
+    margin: 20px 0;
+  }
+  .create-competition input {
+    padding: 8px;
+    font-size: 16px;
+    width: 250px;
+  }
+  .create-competition button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  .create-competition button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Style for Competitions List */
+  .competitions-list {
+    margin: 20px 0;
+  }
+  .competitions-cards {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .competition-card {
+    width: 200px;
+    padding: 15px;
+    margin: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .competition-card:hover {
+    background-color: #e2e6ea;
+  }
+  .competition-card.active {
+    background-color: #007bff;
+    color: white;
+  }
+  .competition-card h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  .competition-card p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
