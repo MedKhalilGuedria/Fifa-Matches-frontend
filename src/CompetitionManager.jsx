@@ -174,6 +174,17 @@ const CompetitionManager = () => {
 
           {/* Add Player */}
           <div className="add-match-container">
+            <h2>Add Player</h2>
+            <input
+              type="text"
+              value={newPlayer}
+              onChange={(e) => setNewPlayer(e.target.value)}
+              placeholder="Player Name"
+            />
+            <button onClick={addPlayer}>Add</button>
+          </div>
+
+          <div className="add-match-container">
     <h2>Add Match</h2>
     <div>
         <select
