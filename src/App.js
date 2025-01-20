@@ -28,7 +28,8 @@ const App = () => {
         `https://fifa-matches-results.onrender.com/api/matches?year=${year}`
       );
       setMatches(matchResponse.data);
-
+  
+      // Fetch players even if they haven't played matches
       const playerResponse = await axios.get(
         `https://fifa-matches-results.onrender.com/api/players?year=${year}`
       );
