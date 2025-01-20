@@ -287,29 +287,31 @@ const CompetitionManager = () => {
             <td>{match.player1?.name || 'Unknown'}</td>
             <td>{match.player2?.name || 'Unknown'}</td>
             <td>
-              <input
-                type="number"
-                value={match.score1}
-                onChange={(e) =>
-                  setMatches((prevMatches) =>
-                    prevMatches.map((m) =>
-                      m._id === match._id ? { ...m, score1: +e.target.value } : m
-                    )
-                  )
-                }
-              />
-              -
-              <input
-                type="number"
-                value={match.score2}
-                onChange={(e) =>
-                  setMatches((prevMatches) =>
-                    prevMatches.map((m) =>
-                      m._id === match._id ? { ...m, score2: +e.target.value } : m
-                    )
-                  )
-                }
-              />
+            <input
+  className="score-input"
+  type="number"
+  value={match.score1}
+  onChange={(e) =>
+    setMatches((prevMatches) =>
+      prevMatches.map((m) =>
+        m._id === match._id ? { ...m, score1: +e.target.value } : m
+      )
+    )
+  }
+/>
+-
+<input
+  className="score-input"
+  type="number"
+  value={match.score2}
+  onChange={(e) =>
+    setMatches((prevMatches) =>
+      prevMatches.map((m) =>
+        m._id === match._id ? { ...m, score2: +e.target.value } : m
+      )
+    )
+  }
+/>
             </td>
             <td>
               <button
