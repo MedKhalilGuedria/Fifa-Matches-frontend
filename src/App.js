@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import H2H from './H2H';
-import './App.css';
 import CompetitionManager from './CompetitionManager';
+import './App.css';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
   const [players, setPlayers] = useState([]);
-  const [year, setYear] = useState('overall'); // Default to "Overall"
+  const [year, setYear] = useState('overall');
   const [form, setForm] = useState({
     player1: '',
     player2: '',
@@ -16,7 +17,7 @@ const App = () => {
   });
   const [newPlayer, setNewPlayer] = useState('');
 
-  const yearRange = Array.from({ length: 8 }, (_, i) => 2023 + i); // Generate years 2023-2030
+  const yearRange = Array.from({ length: 8 }, (_, i) => 2023 + i);
 
   useEffect(() => {
     fetchMatchesAndPlayers();
@@ -28,8 +29,7 @@ const App = () => {
         `https://fifa-matches-results.onrender.com/api/matches?year=${year}`
       );
       setMatches(matchResponse.data);
-  
-      // Fetch players even if they haven't played matches
+
       const playerResponse = await axios.get(
         `https://fifa-matches-results.onrender.com/api/players?year=${year}`
       );
@@ -89,151 +89,173 @@ const App = () => {
     }
   };
 
-  // Sort players by points in descending order and assign ranks
   const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
   sortedPlayers.forEach((player, index) => {
     player.rank = index + 1;
   });
 
   return (
-    <div className="container">
-      <h1>FIFA Match Results</h1>
+    <Router>
+      <div className="container">
+        <nav className="menu">
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/h2h">Head-to-Head</Link>
+            </li>
+            <li>
+              <Link to="/competitions">Competitions</Link>
+            </li>
+          </ul>
+        </nav>
 
-      {/* Year Filter */}
-      <div className="year-filter">
-        <label htmlFor="year-select">Filter by Year:</label>
-        <select id="year-select" value={year} onChange={handleYearChange}>
-          <option value="overall">Overall</option>
-          {yearRange.map((yr) => (
-            <option key={yr} value={yr}>
-              {yr}
-            </option>
-          ))}
-        </select>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div>
+                <h1>FIFA Match Results</h1>
+
+                {/* Year Filter */}
+                <div className="year-filter">
+                  <label htmlFor="year-select">Filter by Year:</label>
+                  <select id="year-select" value={year} onChange={handleYearChange}>
+                    <option value="overall">Overall</option>
+                    {yearRange.map((yr) => (
+                      <option key={yr} value={yr}>
+                        {yr}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Add Match Form */}
+                <h2>Add Match</h2>
+                <form onSubmit={handleSubmit} className="form">
+                  <select
+                    name="player1"
+                    value={form.player1}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  >
+                    <option value="">Select Player 1</option>
+                    {players.map((player) => (
+                      <option key={player._id} value={player.name}>
+                        {player.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    name="player2"
+                    value={form.player2}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  >
+                    <option value="">Select Player 2</option>
+                    {players.map((player) => (
+                      <option key={player._id} value={player.name}>
+                        {player.name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="number"
+                    name="score1"
+                    placeholder="Player 1 Score"
+                    value={form.score1}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  />
+                  <input
+                    type="number"
+                    name="score2"
+                    placeholder="Player 2 Score"
+                    value={form.score2}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  />
+                  <button type="submit" className="button">
+                    Add Match
+                  </button>
+                </form>
+
+                {/* Add Player Form */}
+                <h2>Add New Player</h2>
+                <form onSubmit={handlePlayerSubmit} className="form">
+                  <input
+                    type="text"
+                    placeholder="Player Name"
+                    value={newPlayer}
+                    onChange={handlePlayerChange}
+                    required
+                    className="input"
+                  />
+                  <button type="submit" className="button">
+                    Add Player
+                  </button>
+                </form>
+
+                {/* Match History */}
+                <h2>Match History</h2>
+                <ul className="list">
+                  {matches.map((match) => (
+                    <li key={match._id} className="list-item">
+                      {match.player1} vs {match.player2}: {match.score1} - {match.score2} on{' '}
+                      {new Date(match.date).toLocaleString()}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Player Rankings */}
+                <h2>Player Rankings</h2>
+                <div className="rankings-table-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                        <th>Matches</th>
+                        <th>Wins</th>
+                        <th>Draws</th>
+                        <th>Losses</th>
+                        <th>Goals For</th>
+                        <th>Goals Against</th>
+                        <th>Goal Difference</th>
+                        <th>Points</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedPlayers.map((player) => (
+                        <tr key={player._id}>
+                          <td>{player.rank}</td>
+                          <td>{player.name}</td>
+                          <td>{player.matches}</td>
+                          <td>{player.wins}</td>
+                          <td>{player.draws}</td>
+                          <td>{player.losses}</td>
+                          <td>{player.goalsFor}</td>
+                          <td>{player.goalsAgainst}</td>
+                          <td>{player.goalsFor - player.goalsAgainst}</td>
+                          <td>{player.points}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            }
+          />
+          <Route path="/h2h" element={<H2H />} />
+          <Route path="/competitions" element={<CompetitionManager />} />
+        </Routes>
       </div>
-
-      {/* Add Match Form */}
-      <h2>Add Match</h2>
-      <form onSubmit={handleSubmit} className="form">
-        <select
-          name="player1"
-          value={form.player1}
-          onChange={handleChange}
-          required
-          className="input"
-        >
-          <option value="">Select Player 1</option>
-          {players.map((player) => (
-            <option key={player._id} value={player.name}>
-              {player.name}
-            </option>
-          ))}
-        </select>
-        <select
-          name="player2"
-          value={form.player2}
-          onChange={handleChange}
-          required
-          className="input"
-        >
-          <option value="">Select Player 2</option>
-          {players.map((player) => (
-            <option key={player._id} value={player.name}>
-              {player.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="number"
-          name="score1"
-          placeholder="Player 1 Score"
-          value={form.score1}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <input
-          type="number"
-          name="score2"
-          placeholder="Player 2 Score"
-          value={form.score2}
-          onChange={handleChange}
-          required
-          className="input"
-        />
-        <button type="submit" className="button">
-          Add Match
-        </button>
-      </form>
-
-      {/* Add Player Form */}
-      <h2>Add New Player</h2>
-      <form onSubmit={handlePlayerSubmit} className="form">
-        <input
-          type="text"
-          placeholder="Player Name"
-          value={newPlayer}
-          onChange={handlePlayerChange}
-          required
-          className="input"
-        />
-        <button type="submit" className="button">
-          Add Player
-        </button>
-      </form>
-
-      {/* Match History */}
-      <h2>Match History</h2>
-      <ul className="list">
-        {matches.map((match) => (
-          <li key={match._id} className="list-item">
-            {match.player1} vs {match.player2}: {match.score1} - {match.score2} on{' '}
-            {new Date(match.date).toLocaleString()}
-          </li>
-        ))}
-      </ul>
-
-      {/* Player Rankings with Rank Column */}
-      <h2>Player Rankings</h2>
-      <div className="rankings-table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Player</th>
-              <th>Matches</th>
-              <th>Wins</th>
-              <th>Draws</th>
-              <th>Losses</th>
-              <th>Goals For</th>
-              <th>Goals Against</th>
-              <th>Goal Difference</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedPlayers.map((player) => (
-              <tr key={player._id}>
-                <td>{player.rank}</td>
-                <td>{player.name}</td>
-                <td>{player.matches}</td>
-                <td>{player.wins}</td>
-                <td>{player.draws}</td>
-                <td>{player.losses}</td>
-                <td>{player.goalsFor}</td>
-                <td>{player.goalsAgainst}</td>
-                <td>{player.goalsFor - player.goalsAgainst}</td>
-                <td>{player.points}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Head-to-Head Component */}
-      <H2H />
-      <CompetitionManager />
-    </div>
+    </Router>
   );
 };
 
