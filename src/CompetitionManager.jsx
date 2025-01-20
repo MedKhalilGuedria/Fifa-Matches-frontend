@@ -38,6 +38,8 @@ const CompetitionManager = () => {
     setSelectedCompetition(competition);
     setPlayers(competition.players);
     setMatches(competition.matches);
+    fetchMatches(competition.id);
+    console.log(competition)
   };
 
   const createCompetition = async () => {
