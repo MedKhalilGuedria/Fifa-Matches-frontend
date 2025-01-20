@@ -64,6 +64,7 @@ const CompetitionManager = () => {
         `https://fifa-matches-results.onrender.com/api/competitions/${competitionId}/matches`
       );
       setMatches(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching matches", error);
     }
