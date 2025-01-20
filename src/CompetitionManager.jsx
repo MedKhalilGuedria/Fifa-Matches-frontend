@@ -38,7 +38,7 @@ const CompetitionManager = () => {
     setSelectedCompetition(competition);
     setPlayers(competition.players);
     setMatches(competition.matches);
-    fetchMatches(competition.id);
+    fetchMatches(competition._id);
     console.log(competition)
   };
 
