@@ -1,12 +1,13 @@
 /* H2H Page Container */
 .h2h-container {
-    margin: 20px auto;
-    max-width:1850px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f3f6fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  max-width: 1400px;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f3f6fa;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
   }
   
   /* Heading */
@@ -26,10 +27,12 @@
   }
   
   .h2h-input {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    width: 250px;
+    transition: border-color 0.3s ease;
   }
   
   .h2h-button {
