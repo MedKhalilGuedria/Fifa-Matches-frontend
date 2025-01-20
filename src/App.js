@@ -89,6 +89,12 @@ const App = () => {
     }
   };
 
+  // Sort players by points in descending order and assign ranks
+  const sortedPlayers = [...players].sort((a, b) => b.points - a.points);
+  sortedPlayers.forEach((player, index) => {
+    player.rank = index + 1;
+  });
+
   return (
     <div className="container">
       <h1>FIFA Match Results</h1>
@@ -187,44 +193,46 @@ const App = () => {
         ))}
       </ul>
 
-      {/* Player Rankings */}
+      {/* Player Rankings with Rank Column */}
       <h2>Player Rankings</h2>
       <div className="rankings-table-container">
-  <table >
-    <thead>
-      <tr>
-        <th>Player</th>
-        <th>Matches</th>
-        <th>Wins</th>
-        <th>Draws</th>
-        <th>Losses</th>
-        <th>Goals For</th>
-        <th>Goals Against</th>
-        <th>Goal Difference</th>
-        <th>Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      {players.map((player) => (
-        <tr key={player._id}>
-          <td>{player.name}</td>
-          <td>{player.matches}</td>
-          <td>{player.wins}</td>
-          <td>{player.draws}</td>
-          <td>{player.losses}</td>
-          <td>{player.goalsFor}</td>
-          <td>{player.goalsAgainst}</td>
-          <td>{player.goalsFor - player.goalsAgainst}</td>
-          <td>{player.points}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Matches</th>
+              <th>Wins</th>
+              <th>Draws</th>
+              <th>Losses</th>
+              <th>Goals For</th>
+              <th>Goals Against</th>
+              <th>Goal Difference</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedPlayers.map((player) => (
+              <tr key={player._id}>
+                <td>{player.rank}</td>
+                <td>{player.name}</td>
+                <td>{player.matches}</td>
+                <td>{player.wins}</td>
+                <td>{player.draws}</td>
+                <td>{player.losses}</td>
+                <td>{player.goalsFor}</td>
+                <td>{player.goalsAgainst}</td>
+                <td>{player.goalsFor - player.goalsAgainst}</td>
+                <td>{player.points}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Head-to-Head Component */}
       <H2H />
-      <CompetitionManager/>
+      <CompetitionManager />
     </div>
   );
 };
