@@ -33,7 +33,19 @@ const CompetitionManager = () => {
       console.error("Error fetching competitions", error);
     }
   };
-
+  const updateMatchResult = async (matchId, score1, score2) => {
+    try {
+      await axios.put(
+        `https://fifa-matches-results.onrender.com/api/competitions/${matchId}`,
+        { score1, score2 }
+      );
+      fetchMatches(selectedCompetition._id); // Refresh the matches
+      alert('Match result updated successfully!');
+    } catch (error) {
+      console.error('Error updating match result:', error);
+      alert('Failed to update match result.');
+    }
+  };
   const handleCompetitionSelect = (competition) => {
     setSelectedCompetition(competition);
     setPlayers(competition.players);
@@ -254,34 +266,66 @@ const CompetitionManager = () => {
             placeholder="Player 2 Score"
         />
         <button onClick={addMatch}>Add Match</button>
-        <h2>Matches for {selectedCompetition.name}</h2>
-          {matches.length === 0 ? (
-            <p>No matches available. Generate matches to start!</p>
-          ) : (
-            <table className="matches-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Player 1</th>
-                  <th>Player 2</th>
-                  <th>Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {matches.map((match, index) => (
-                  <tr key={match._id}>
-                    <td>{index + 1}</td>
-                    <td>{match.player1?.name || "Unknown"}</td>
-                    <td>{match.player2?.name || "Unknown"}</td>
-                    <td>
-                      {match.score1} - {match.score2}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-    </div>
+  <h2>Matches for {selectedCompetition.name}</h2>
+  {matches.length === 0 ? (
+    <p>No matches available. Generate matches to start!</p>
+  ) : (
+    <table className="matches-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Score</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {matches.map((match, index) => (
+          <tr key={match._id}>
+            <td>{index + 1}</td>
+            <td>{match.player1?.name || 'Unknown'}</td>
+            <td>{match.player2?.name || 'Unknown'}</td>
+            <td>
+              <input
+                type="number"
+                value={match.score1}
+                onChange={(e) =>
+                  setMatches((prevMatches) =>
+                    prevMatches.map((m) =>
+                      m._id === match._id ? { ...m, score1: +e.target.value } : m
+                    )
+                  )
+                }
+              />
+              -
+              <input
+                type="number"
+                value={match.score2}
+                onChange={(e) =>
+                  setMatches((prevMatches) =>
+                    prevMatches.map((m) =>
+                      m._id === match._id ? { ...m, score2: +e.target.value } : m
+                    )
+                  )
+                }
+              />
+            </td>
+            <td>
+              <button
+                onClick={() =>
+                  updateMatchResult(match._id, match.score1, match.score2)
+                }
+              >
+                Save
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
 </div>
 
         </>
