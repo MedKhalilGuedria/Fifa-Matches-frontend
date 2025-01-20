@@ -58,6 +58,34 @@ const CompetitionManager = () => {
       console.error("Error creating competition", error);
     }
   };
+  const fetchMatches = async (competitionId) => {
+    try {
+      const response = await axios.get(
+        `https://fifa-matches-results.onrender.com/api/competitions/${competitionId}/matches`
+      );
+      setMatches(response.data);
+    } catch (error) {
+      console.error("Error fetching matches", error);
+    }
+  };
+
+  const drawMatches = async () => {
+    if (!selectedCompetition) {
+      alert("Please select a competition first.");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `https://fifa-matches-results.onrender.com/api/competitions/${selectedCompetition._id}/draw`
+      );
+      fetchMatches(selectedCompetition._id); // Refresh matches
+      alert("Random draw completed! Matches have been generated.");
+    } catch (error) {
+      console.error("Error generating draw", error);
+      alert("Failed to generate matches.");
+    }
+  };
 
   const addPlayer = async () => {
     if (!newPlayer.trim()) return;
@@ -133,6 +161,7 @@ const CompetitionManager = () => {
 
       {selectedCompetition ? (
         <>
+        <button onClick={drawMatches}>Generate Random Matches for Next Round</button>
           {/* Rankings */}
           <div className="rankings-table-container">
     <h2>Rankings for {selectedCompetition.name}</h2>
@@ -222,6 +251,33 @@ const CompetitionManager = () => {
             placeholder="Player 2 Score"
         />
         <button onClick={addMatch}>Add Match</button>
+        <h2>Matches for {selectedCompetition.name}</h2>
+          {matches.length === 0 ? (
+            <p>No matches available. Generate matches to start!</p>
+          ) : (
+            <table className="matches-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Player 1</th>
+                  <th>Player 2</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {matches.map((match, index) => (
+                  <tr key={match._id}>
+                    <td>{index + 1}</td>
+                    <td>{match.player1?.name || "Unknown"}</td>
+                    <td>{match.player2?.name || "Unknown"}</td>
+                    <td>
+                      {match.score1} - {match.score2}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
     </div>
 </div>
 
