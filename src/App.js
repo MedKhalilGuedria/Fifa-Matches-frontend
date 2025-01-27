@@ -236,21 +236,7 @@ const App = () => {
 
                 {/* Match History */}
                 {/* Match History */}
-<h2 className="section-title">Match History</h2>
-<div className="pagination-controls">
-  <button 
-    className="pagination-button" 
-    onClick={handlePrevPage} 
-    disabled={currentPage === 0}>
-    Previous
-  </button>
-  <button 
-    className="pagination-button" 
-    onClick={handleNextPage} 
-    disabled={currentPage === totalPages - 1}>
-    Next
-  </button>
-</div>
+
 
 <h2 className="section-title">Match History</h2>
 <div className="pagination-controls">
