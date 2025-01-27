@@ -252,13 +252,31 @@ const App = () => {
   </button>
 </div>
 
-<div className="match-history">
-  {paginatedDays.map((date) => (
-    <div key={date} className="day-group">
-      <h3 className="day-title">{date}</h3>
-      <div className="matches-by-day">
-        {matchesByDay[date].map((match) => (
-          <div key={match._id} className="match-card">
+<h2 className="section-title">Match History</h2>
+<div className="pagination-controls">
+  <button
+    className="pagination-button"
+    onClick={handlePrevPage}
+    disabled={currentPage === 1}
+  >
+    Previous
+  </button>
+  <button
+    className="pagination-button"
+    onClick={handleNextPage}
+    disabled={currentPage === totalPages}
+  >
+    Next
+  </button>
+</div>
+
+<ul className="list">
+  {visibleDays.map((day) => (
+    <li key={day} className="list-day">
+      <h3 className="day-title">{day}</h3>
+      <ul className="matches-by-day">
+        {groupedMatches[day].map((match) => (
+          <li key={match._id} className="match-card">
             <div className="match-details">
               <div className="player-names">
                 <span className="player">{match.player1}</span>
@@ -271,12 +289,12 @@ const App = () => {
                 <span className="score">{match.score2}</span>
               </div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
-    </div>
+      </ul>
+    </li>
   ))}
-</div>
+</ul>
 
 
                 {/* Player Rankings */}
