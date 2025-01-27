@@ -235,28 +235,49 @@ const App = () => {
                 </form>
 
                 {/* Match History */}
-                <h2 className="section-title">Match History</h2>
+                {/* Match History */}
+<h2 className="section-title">Match History</h2>
+<div className="pagination-controls">
+  <button 
+    className="pagination-button" 
+    onClick={handlePrevPage} 
+    disabled={currentPage === 0}>
+    Previous
+  </button>
+  <button 
+    className="pagination-button" 
+    onClick={handleNextPage} 
+    disabled={currentPage === totalPages - 1}>
+    Next
+  </button>
+</div>
+
 <div className="match-history">
-  {matches.map((match) => (
-    <div key={match._id} className="match-card">
-      <div className="match-header">
-        <span className="match-date">{new Date(match.date).toLocaleDateString()}</span>
-      </div>
-      <div className="match-details">
-        <div className="player-names">
-          <span className="player">{match.player1}</span>
-          <span className="vs">vs</span>
-          <span className="player">{match.player2}</span>
-        </div>
-        <div className="match-scores">
-          <span className="score">{match.score1}</span>
-          <span>-</span>
-          <span className="score">{match.score2}</span>
-        </div>
+  {paginatedDays.map((date) => (
+    <div key={date} className="day-group">
+      <h3 className="day-title">{date}</h3>
+      <div className="matches-by-day">
+        {matchesByDay[date].map((match) => (
+          <div key={match._id} className="match-card">
+            <div className="match-details">
+              <div className="player-names">
+                <span className="player">{match.player1}</span>
+                <span className="vs">vs</span>
+                <span className="player">{match.player2}</span>
+              </div>
+              <div className="match-scores">
+                <span className="score">{match.score1}</span>
+                <span>-</span>
+                <span className="score">{match.score2}</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   ))}
 </div>
+
 
                 {/* Player Rankings */}
                 <h2>Player Rankings</h2>
