@@ -16,6 +16,7 @@ const App = () => {
     score2: '',
   });
   const [newPlayer, setNewPlayer] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const yearRange = Array.from({ length: 8 }, (_, i) => 2023 + i);
 
@@ -39,8 +40,29 @@ const App = () => {
     }
   };
 
+  const groupMatchesByDay = (matches) => {
+    return matches.reduce((acc, match) => {
+      const matchDate = new Date(match.date).toLocaleDateString();
+      if (!acc[matchDate]) {
+        acc[matchDate] = [];
+      }
+      acc[matchDate].push(match);
+      return acc;
+    }, {});
+  };
+
+  const paginatedDays = (groupedMatches, currentPage, daysPerPage) => {
+    const days = Object.keys(groupedMatches);
+    const totalPages = Math.ceil(days.length / daysPerPage);
+    const startIndex = (currentPage - 1) * daysPerPage;
+    const endIndex = startIndex + daysPerPage;
+    const paginatedDays = days.slice(startIndex, endIndex);
+    return { paginatedDays, totalPages };
+  };
+
   const handleYearChange = (e) => {
     setYear(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleChange = (e) => {
@@ -93,6 +115,17 @@ const App = () => {
   sortedPlayers.forEach((player, index) => {
     player.rank = index + 1;
   });
+
+  const groupedMatches = groupMatchesByDay(matches);
+  const { paginatedDays: visibleDays, totalPages } = paginatedDays(groupedMatches, currentPage, 3);
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
 
   return (
     <Router>
@@ -203,11 +236,25 @@ const App = () => {
 
                 {/* Match History */}
                 <h2>Match History</h2>
+                <div className="pagination-controls">
+                  <button onClick={handlePrevPage} disabled={currentPage === 1}>
+                    Previous
+                  </button>
+                  <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                    Next
+                  </button>
+                </div>
                 <ul className="list">
-                  {matches.map((match) => (
-                    <li key={match._id} className="list-item">
-                      {match.player1} vs {match.player2}: {match.score1} - {match.score2} on{' '}
-                      {new Date(match.date).toLocaleString()}
+                  {visibleDays.map((day) => (
+                    <li key={day} className="list-day">
+                      <h3>{day}</h3>
+                      <ul>
+                        {groupedMatches[day].map((match) => (
+                          <li key={match._id}>
+                            {match.player1} vs {match.player2}: {match.score1} - {match.score2}
+                          </li>
+                        ))}
+                      </ul>
                     </li>
                   ))}
                 </ul>
