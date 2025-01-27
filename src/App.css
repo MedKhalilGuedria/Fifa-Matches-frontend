@@ -192,3 +192,83 @@ h2 {
 .menu a:hover {
   background-color: #575757;
 }
+
+
+/* Section Title */
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Match History Container */
+.match-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Match Card */
+.match-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Match Header */
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.match-date {
+  font-weight: bold;
+}
+
+/* Match Details */
+.match-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-names {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.player {
+  color: #007bff;
+}
+
+.vs {
+  margin: 0 0.5rem;
+  color: #888;
+}
+
+/* Match Scores */
+.match-scores {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.score {
+  margin: 0 0.2rem;
+}

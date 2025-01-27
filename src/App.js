@@ -235,29 +235,28 @@ const App = () => {
                 </form>
 
                 {/* Match History */}
-                <h2>Match History</h2>
-                <div className="pagination-controls">
-                  <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                    Previous
-                  </button>
-                  <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                    Next
-                  </button>
-                </div>
-                <ul className="list">
-                  {visibleDays.map((day) => (
-                    <li key={day} className="list-day">
-                      <h3>{day}</h3>
-                      <ul>
-                        {groupedMatches[day].map((match) => (
-                          <li key={match._id}>
-                            {match.player1} vs {match.player2}: {match.score1} - {match.score2}
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  ))}
-                </ul>
+                <h2 className="section-title">Match History</h2>
+<div className="match-history">
+  {matches.map((match) => (
+    <div key={match._id} className="match-card">
+      <div className="match-header">
+        <span className="match-date">{new Date(match.date).toLocaleDateString()}</span>
+      </div>
+      <div className="match-details">
+        <div className="player-names">
+          <span className="player">{match.player1}</span>
+          <span className="vs">vs</span>
+          <span className="player">{match.player2}</span>
+        </div>
+        <div className="match-scores">
+          <span className="score">{match.score1}</span>
+          <span>-</span>
+          <span className="score">{match.score2}</span>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
                 {/* Player Rankings */}
                 <h2>Player Rankings</h2>
