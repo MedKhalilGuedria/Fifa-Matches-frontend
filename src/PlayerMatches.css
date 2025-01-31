@@ -105,4 +105,29 @@
       transform: translateY(0);
     }
   }
+
+
+  .result-square {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  
+  .result-square.win {
+    background-color: green;
+  }
+  
+  .result-square.loss {
+    background-color: red;
+  }
+  
+  .result-square.draw {
+    background-color: orange;
+  }
   
