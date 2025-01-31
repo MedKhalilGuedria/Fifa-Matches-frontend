@@ -12,6 +12,7 @@ const PlayerMatches = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
+        console.log(playerName)
         const response = await axios.get(`https://fifa-matches-results.onrender.com/api/matches/${playerName}`);
         console.log(response.data)
         setMatches(response.data);
