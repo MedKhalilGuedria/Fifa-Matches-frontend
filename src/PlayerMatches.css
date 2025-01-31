@@ -20,12 +20,18 @@
   }
   
   /* Match Card Styles */
- 
-  .match-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  .match-cardd {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   }
-
+  
   .player-link {
     color: inherit; /* Utilise la couleur du texte environnant */
     text-decoration: none; /* Supprime le soulignement */
@@ -39,6 +45,11 @@
   .player-link:hover {
     text-decoration: underline; /* Ajoute un soulignement au survol */
     color: #007bff; /* Change la couleur légèrement au survol */
+  }
+
+  .match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
   
   /* Player Names */
