@@ -302,21 +302,29 @@ const App = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedPlayers.map((player) => (
-                        <tr key={player._id}>
-                          <td>{player.rank}</td>
-                          <td>{player.name}</td>
-                          <td>{player.matches}</td>
-                          <td>{player.wins}</td>
-                          <td>{player.draws}</td>
-                          <td>{player.losses}</td>
-                          <td>{player.goalsFor}</td>
-                          <td>{player.goalsAgainst}</td>
-                          <td>{player.goalsFor - player.goalsAgainst}</td>
-                          <td>{player.points}</td>
-                        </tr>
-                      ))}
-                    </tbody>
+  {sortedPlayers.map((player) => {
+    const efficiency =
+      player.matches > 0
+        ? ((player.wins * 3 + player.draws) / (player.matches * 3)) * 100
+        : 0;
+
+    return (
+      <tr key={player._id}>
+        <td>{player.rank}</td>
+        <td>{player.name}</td>
+        <td>{player.matches}</td>
+        <td>{player.wins}</td>
+        <td>{player.draws}</td>
+        <td>{player.losses}</td>
+        <td>{player.goalsFor}</td>
+        <td>{player.goalsAgainst}</td>
+        <td>{player.goalsFor - player.goalsAgainst}</td>
+        <td>{player.points}</td>
+        <td>{efficiency.toFixed(2)}%</td> {/* New Efficiency Column */}
+      </tr>
+    );
+  })}
+</tbody>
                   </table>
                 </div>
               </div>
