@@ -13,8 +13,8 @@ const PlayerMatches = () => {
     const fetchMatches = async () => {
       try {
         const response = await axios.get(`https://fifa-matches-results.onrender.com/api/matches/${playerName}`);
-        setMatches(response.data);
         console.log(response.data)
+        setMatches(response.data);
         setLoading(false);
       } catch (err) {
         setError('Failed to fetch player matches.');
