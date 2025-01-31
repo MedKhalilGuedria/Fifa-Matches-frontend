@@ -299,6 +299,8 @@ const App = () => {
                         <th>Goals Against</th>
                         <th>Goal Difference</th>
                         <th>Points</th>
+                        <th>Efficiency</th>
+
                       </tr>
                     </thead>
                     <tbody>
