@@ -4,6 +4,7 @@ import axios from 'axios';
 import H2H from './H2H';
 import CompetitionManager from './CompetitionManager';
 import './App.css';
+import PlayerMatches from './PlayerMatches';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
@@ -313,8 +314,9 @@ const App = () => {
     return (
       <tr key={player._id}>
         <td>{player.rank}</td>
-        <td>{player.name}</td>
-        <td>{player.matches}</td>
+        <Link to={`/player/${player.name}`} className="player-link">
+    {player.name}
+  </Link>        <td>{player.matches}</td>
         <td>{player.wins}</td>
         <td>{player.draws}</td>
         <td>{player.losses}</td>
@@ -334,6 +336,8 @@ const App = () => {
           />
           <Route path="/h2h" element={<H2H />} />
           <Route path="/competitions" element={<CompetitionManager />} />
+          <Route path="/player/:playerName" element={<PlayerMatches />} />
+
         </Routes>
       </div>
     </Router>
