@@ -35,7 +35,7 @@ const PlayerMatches = () => {
           <p>No matches found for {playerName}.</p>
         ) : (
           matches.map((match) => (
-            <div key={match._id} className="match-card">
+            <div key={match._id} className="match-cardd">
               <div className="match-details">
                 <span className="player">{match.player1}</span>
                 <span className="vs">vs</span>
