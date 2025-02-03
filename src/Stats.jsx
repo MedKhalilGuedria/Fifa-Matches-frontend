@@ -61,6 +61,7 @@ const Stats = ({ year }) => {
           playerStats[name] = { matches: 0, wins: 0, draws: 0, goalsFor: 0, goalsAgainst: 0 };
         }
         playerStats[name].matches++;
+        console.log(playerStats[name])
         playerStats[name].goalsFor += scored;
         playerStats[name].goalsAgainst += conceded;
         if (won) playerStats[name].wins++;
