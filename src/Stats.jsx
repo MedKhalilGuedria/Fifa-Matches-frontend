@@ -22,7 +22,7 @@ const Stats = ({ year }) => {
 
   const calculateStats = (matches) => {
     if (matches.length === 0) return;
-
+  
     let totalMatches = matches.length;
     let totalGoals = 0;
     let draws = 0;
@@ -32,18 +32,18 @@ const Stats = ({ year }) => {
     let lowestScoringMatch = null;
     let resultCount = {};
     let playerStats = {};
-
+  
     matches.forEach(({ player1, player2, score1, score2 }) => {
       totalGoals += score1 + score2;
-
+  
       // Track most repeated results
       const result = `${score1}-${score2}`;
       resultCount[result] = (resultCount[result] || 0) + 1;
-
+  
       if (score1 === score2) draws++;
       if (score1 === 0 || score2 === 0) oneSideScored++;
       if (score1 >= 10 || score2 >= 10) highScoringMatches++;
-
+  
       const matchTotalGoals = score1 + score2;
       if (!highestScoringMatch || matchTotalGoals > highestScoringMatch.total) {
         highestScoringMatch = { player1, player2, score1, score2, total: matchTotalGoals };
@@ -51,25 +51,26 @@ const Stats = ({ year }) => {
       if (!lowestScoringMatch || matchTotalGoals < lowestScoringMatch.total) {
         lowestScoringMatch = { player1, player2, score1, score2, total: matchTotalGoals };
       }
-
+  
       // Player stats
       [
         { name: player1, scored: score1, conceded: score2, won: score1 > score2, drew: score1 === score2 },
         { name: player2, scored: score2, conceded: score1, won: score2 > score1, drew: score1 === score2 }
       ].forEach(({ name, scored, conceded, won, drew }) => {
+        // Ensure player stats are initialized before accessing properties
         if (!playerStats[name]) {
           playerStats[name] = { matches: 0, wins: 0, draws: 0, goalsFor: 0, goalsAgainst: 0 };
         }
+  
         playerStats[name].matches++;
         playerStats[name].goalsFor += scored;
         playerStats[name].goalsAgainst += conceded;
-        console.log(playerStats)
-
+  
         if (won) playerStats[name].wins++;
         if (drew) playerStats[name].draws++;
       });
     });
-
+  
     const mostRepeatedResult = Object.keys(resultCount).reduce((a, b) => (resultCount[a] > resultCount[b] ? a : b), '');
     const bestAttack = Object.keys(playerStats).reduce((a, b) => (playerStats[a].goalsFor > playerStats[b].goalsFor ? a : b), '');
     const bestDefense = Object.keys(playerStats).reduce((a, b) => (playerStats[a].goalsAgainst < playerStats[b].goalsAgainst ? a : b), '');
@@ -78,7 +79,7 @@ const Stats = ({ year }) => {
     const mostWins = Object.keys(playerStats).reduce((a, b) => (playerStats[a].wins > playerStats[b].wins ? a : b), '');
     const mostDraws = Object.keys(playerStats).reduce((a, b) => (playerStats[a].draws > playerStats[b].draws ? a : b), '');
     const mostEfficientPlayer = Object.keys(playerStats).reduce((a, b) => ((playerStats[a].wins / playerStats[a].matches) > (playerStats[b].wins / playerStats[b].matches) ? a : b), '');
-
+  
     setStats({
       totalMatches,
       totalGoals,
