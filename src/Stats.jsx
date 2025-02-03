@@ -131,7 +131,7 @@ const Stats = ({ year }) => {
         title,
         details: `Result: ${stats.mostRepeatedResult}, Occurrences: ${repeatedMatches.length}\n\nMatches with this result:\n${matchDetails}`,
       });
-    } else if (title === 'High Scoring Matches (10+ goals on either side)') {
+    } else if (title === 'High Scoring Matches (10+ goals)') {
       // Filter high-scoring matches where at least one side scored 10 or more goals
       const highScoringMatches = matches.filter(match => match.score1 >= 10 || match.score2 >= 10);
       const highScoringMatchDetails = highScoringMatches.map((match, index) => (
