@@ -39,7 +39,7 @@ const Stats = ({ year }) => {
 
   const calculateStats = (matches) => {
     if (matches.length === 0) return;
-
+  
     let totalMatches = matches.length;
     let totalGoals = 0;
     let draws = 0;
@@ -49,18 +49,18 @@ const Stats = ({ year }) => {
     let lowestScoringMatch = null;
     let resultCount = {};
     let playerStats = {};
-
+  
     matches.forEach(({ player1, player2, score1, score2 }) => {
       totalGoals += score1 + score2;
-
+  
       // Track most repeated results
       const result = `${score1}-${score2}`;
       resultCount[result] = (resultCount[result] || 0) + 1;
-
+  
       if (score1 === score2) draws++;
       if (score1 === 0 || score2 === 0) oneSideScored++;
       if (score1 >= 10 || score2 >= 10) highScoringMatches++;
-
+  
       const matchTotalGoals = score1 + score2;
       if (!highestScoringMatch || matchTotalGoals > highestScoringMatch.total) {
         highestScoringMatch = { player1, player2, score1, score2, total: matchTotalGoals };
@@ -68,7 +68,7 @@ const Stats = ({ year }) => {
       if (!lowestScoringMatch || matchTotalGoals < lowestScoringMatch.total) {
         lowestScoringMatch = { player1, player2, score1, score2, total: matchTotalGoals };
       }
-
+  
       // Player stats
       [
         { name: player1, scored: score1, conceded: score2, won: score1 > score2, drew: score1 === score2 },
@@ -78,23 +78,61 @@ const Stats = ({ year }) => {
           playerStats[name] = { matches: 0, wins: 0, draws: 0, goalsFor: 0, goalsAgainst: 0 };
         }
         playerStats[name].matches++;
-        playerStats[name].goalsFor += scored;
-        playerStats[name].goalsAgainst += conceded;
+        playerStats[name].goalsFor += scored || 0; // Default to 0 if undefined
+        playerStats[name].goalsAgainst += conceded || 0; // Default to 0 if undefined
         if (won) playerStats[name].wins++;
         if (drew) playerStats[name].draws++;
       });
     });
-
-    const mostRepeatedResult = Object.keys(resultCount).reduce((a, b) => (resultCount[a] > resultCount[b] ? a : b), '');
-    const bestAttack = Object.keys(playerStats).reduce((a, b) => (playerStats[a].goalsFor > playerStats[b].goalsFor ? a : b), '');
-    const bestDefense = Object.keys(playerStats).filter(player => playerStats[player].matches > 9).reduce((a, b) => (playerStats[a].goalsAgainst < playerStats[b].goalsAgainst ? a : b), '');
-    const worstAttack = Object.keys(playerStats).filter(player => playerStats[player].matches > 9).reduce((a, b) => (playerStats[a].goalsFor < playerStats[b].goalsFor ? a : b), '');
-// Only consider players who have played more than 9 matches for Best Defense and Worst Attack
   
-    const worstDefense = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.goalsAgainst > playerStats[b]?.goalsAgainst ? a : b), '');
+    // Find most repeated result
+    const mostRepeatedResult = Object.keys(resultCount).reduce((a, b) => (resultCount[a] > resultCount[b] ? a : b), '');
+  
+    // Best Attack (most goals)
+    const bestAttack = Object.keys(playerStats).reduce((a, b) => {
+      const goalsForA = playerStats[a]?.goalsFor || 0;
+      const goalsForB = playerStats[b]?.goalsFor || 0;
+      return goalsForA > goalsForB ? a : b;
+    }, '');
+  
+    // Best Defense (least goals conceded)
+    const bestDefense = Object.keys(playerStats)
+      .filter(player => playerStats[player]?.matches > 9)
+      .reduce((a, b) => {
+        const goalsAgainstA = playerStats[a]?.goalsAgainst || 0;
+        const goalsAgainstB = playerStats[b]?.goalsAgainst || 0;
+        return goalsAgainstA < goalsAgainstB ? a : b;
+      }, '');
+  
+    // Worst Attack (least goals scored)
+    const worstAttack = Object.keys(playerStats)
+      .filter(player => playerStats[player]?.matches > 9)
+      .reduce((a, b) => {
+        const goalsForA = playerStats[a]?.goalsFor || 0;
+        const goalsForB = playerStats[b]?.goalsFor || 0;
+        return goalsForA < goalsForB ? a : b;
+      }, '');
+  
+    // Worst Defense (most goals conceded)
+    const worstDefense = Object.keys(playerStats).reduce((a, b) => {
+      const goalsAgainstA = playerStats[a]?.goalsAgainst || 0;
+      const goalsAgainstB = playerStats[b]?.goalsAgainst || 0;
+      return goalsAgainstA > goalsAgainstB ? a : b;
+    }, '');
+  
+    // Most Wins (most victories)
     const mostWins = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.wins > playerStats[b]?.wins ? a : b), '');
+  
+    // Most Draws (most draws)
     const mostDraws = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.draws > playerStats[b]?.draws ? a : b), '');
-    const mostEfficientPlayer = Object.keys(playerStats).reduce((a, b) => ((playerStats[a]?.wins / playerStats[a]?.matches) > (playerStats[b]?.wins / playerStats[b]?.matches) ? a : b), '');
+  
+    // Most Efficient Player (highest win percentage)
+    const mostEfficientPlayer = Object.keys(playerStats).reduce((a, b) => {
+      const winPercentageA = playerStats[a]?.wins / playerStats[a]?.matches || 0;
+      const winPercentageB = playerStats[b]?.wins / playerStats[b]?.matches || 0;
+      return winPercentageA > winPercentageB ? a : b;
+    }, '');
+  
     setStats({
       totalMatches,
       totalGoals,
@@ -110,12 +148,10 @@ const Stats = ({ year }) => {
       mostEfficientPlayer,
       bestDefense,
       worstAttack,
-      worstDefense,
-      mostWins: Object.keys(playerStats).reduce((a, b) => (playerStats[a].wins > playerStats[b].wins ? a : b), ''),
-      mostDraws: Object.keys(playerStats).reduce((a, b) => (playerStats[a].draws > playerStats[b].draws ? a : b), ''),
-      mostEfficientPlayer: Object.keys(playerStats).reduce((a, b) => ((playerStats[a].wins / playerStats[a].matches) > (playerStats[b].wins / playerStats[b].matches) ? a : b), ''),
+      worstDefense
     });
   };
+  
 
   const handleCardClick = (title, details) => {
     setModalDetails({ title, details });
