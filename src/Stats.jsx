@@ -119,10 +119,21 @@ const Stats = ({ year }) => {
   
 
   const handleCardClick = (title, details) => {
-    setModalDetails({ title, details });
+    if (title === 'Most Repeated Result') {
+      const repeatedMatches = matches.filter(match => `${match.score1}-${match.score2}` === stats.mostRepeatedResult);
+      const matchDetails = repeatedMatches.map((match, index) => (
+        `Match ${index + 1}: ${match.player1} vs ${match.player2}, Score: ${match.score1}-${match.score2}`
+      )).join('\n');
+  
+      setModalDetails({
+        title,
+        details: `Result: ${stats.mostRepeatedResult}, Occurrences: ${repeatedMatches.length}\n\nMatches:\n${matchDetails}`,
+      });
+    } else {
+      setModalDetails({ title, details });
+    }
     setModalOpen(true);
   };
-
   const closeModal = () => setModalOpen(false);
 
   if (!stats) return <p>Loading stats...</p>;
