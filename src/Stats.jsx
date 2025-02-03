@@ -128,7 +128,7 @@ const Stats = ({ year }) => {
           <div className="stat-value">{stats.oneSideScored}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-title">High Scoring Matches (10+ goals)</div>
+          <div className="stat-title">High Scoring Matches (Played Scored 10+)</div>
           <div className="stat-value">{stats.highScoringMatches}</div>
         </div>
         <div className="stat-card">
