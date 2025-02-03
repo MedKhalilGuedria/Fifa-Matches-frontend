@@ -57,17 +57,20 @@ const Stats = ({ year }) => {
         { name: player1, scored: score1, conceded: score2, won: score1 > score2, drew: score1 === score2 },
         { name: player2, scored: score2, conceded: score1, won: score2 > score1, drew: score1 === score2 }
       ].forEach(({ name, scored, conceded, won, drew }) => {
-        // Ensure player stats are initialized before accessing properties
+        // Initialize the player's stats object if it doesn't exist
         if (!playerStats[name]) {
           playerStats[name] = { matches: 0, wins: 0, draws: 0, goalsFor: 0, goalsAgainst: 0 };
         }
   
-        playerStats[name].matches++;
-        playerStats[name].goalsFor += scored;
-        playerStats[name].goalsAgainst += conceded;
-  
-        if (won) playerStats[name].wins++;
-        if (drew) playerStats[name].draws++;
+        // Safely increment the player's stats
+        playerStats[name] = {
+          ...playerStats[name], // Preserve previous stats
+          matches: playerStats[name].matches + 1,
+          goalsFor: playerStats[name].goalsFor + scored,
+          goalsAgainst: playerStats[name].goalsAgainst + conceded,
+          wins: playerStats[name].wins + (won ? 1 : 0),
+          draws: playerStats[name].draws + (drew ? 1 : 0)
+        };
       });
     });
   
@@ -98,6 +101,7 @@ const Stats = ({ year }) => {
       mostEfficientPlayer,
     });
   };
+  
 
   if (!stats) return <p>Loading stats...</p>;
 
