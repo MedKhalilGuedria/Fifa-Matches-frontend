@@ -131,9 +131,9 @@ const Stats = ({ year }) => {
         title,
         details: `Result: ${stats.mostRepeatedResult}, Occurrences: ${repeatedMatches.length}\n\nMatches with this result:\n${matchDetails}`,
       });
-    } else if (title === 'High Scoring Matches (10+ goals)') {
-      // Filter high-scoring matches (10 or more goals)
-      const highScoringMatches = matches.filter(match => (match.score1 + match.score2) >= 10);
+    } else if (title === 'High Scoring Matches (10+ goals on either side)') {
+      // Filter high-scoring matches where at least one side scored 10 or more goals
+      const highScoringMatches = matches.filter(match => match.score1 >= 10 || match.score2 >= 10);
       const highScoringMatchDetails = highScoringMatches.map((match, index) => (
         `Match ${index + 1}: ${match.player1} vs ${match.player2}, Score: ${match.score1}-${match.score2}`
       )).join('\n');
@@ -141,7 +141,7 @@ const Stats = ({ year }) => {
       // Set the modal details for high-scoring matches
       setModalDetails({
         title,
-        details: `High Scoring Matches (10+ goals):\n${highScoringMatchDetails}`,
+        details: `High Scoring Matches (10+ goals on either side):\n${highScoringMatchDetails}`,
       });
     } else {
       // For other cards, just set the title and details
@@ -150,6 +150,7 @@ const Stats = ({ year }) => {
     
     setModalOpen(true);
   };
+  
   
   const closeModal = () => setModalOpen(false);
 
