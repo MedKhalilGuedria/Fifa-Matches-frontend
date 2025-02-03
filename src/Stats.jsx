@@ -120,20 +120,37 @@ const Stats = ({ year }) => {
 
   const handleCardClick = (title, details) => {
     if (title === 'Most Repeated Result') {
+      // Filter matches for the most repeated result
       const repeatedMatches = matches.filter(match => `${match.score1}-${match.score2}` === stats.mostRepeatedResult);
       const matchDetails = repeatedMatches.map((match, index) => (
         `Match ${index + 1}: ${match.player1} vs ${match.player2}, Score: ${match.score1}-${match.score2}`
       )).join('\n');
-  
+      
+      // Set the modal details with repeated result and the matches
       setModalDetails({
         title,
-        details: `Result: ${stats.mostRepeatedResult}, Occurrences: ${repeatedMatches.length}\n\nMatches:\n${matchDetails}`,
+        details: `Result: ${stats.mostRepeatedResult}, Occurrences: ${repeatedMatches.length}\n\nMatches with this result:\n${matchDetails}`,
+      });
+    } else if (title === 'High Scoring Matches (10+ goals)') {
+      // Filter high-scoring matches (10 or more goals)
+      const highScoringMatches = matches.filter(match => (match.score1 + match.score2) >= 10);
+      const highScoringMatchDetails = highScoringMatches.map((match, index) => (
+        `Match ${index + 1}: ${match.player1} vs ${match.player2}, Score: ${match.score1}-${match.score2}`
+      )).join('\n');
+    
+      // Set the modal details for high-scoring matches
+      setModalDetails({
+        title,
+        details: `High Scoring Matches (10+ goals):\n${highScoringMatchDetails}`,
       });
     } else {
+      // For other cards, just set the title and details
       setModalDetails({ title, details });
     }
+    
     setModalOpen(true);
   };
+  
   const closeModal = () => setModalOpen(false);
 
   if (!stats) return <p>Loading stats...</p>;
