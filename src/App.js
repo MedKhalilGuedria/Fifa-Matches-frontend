@@ -5,6 +5,7 @@ import H2H from './H2H';
 import CompetitionManager from './CompetitionManager';
 import './App.css';
 import PlayerMatches from './PlayerMatches';
+import Stats from './Stats';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
@@ -141,6 +142,9 @@ const App = () => {
             </li>
             <li>
               <Link to="/competitions">Competitions</Link>
+            </li>
+            <li>
+              <Link to="/stats">Competitions</Link>
             </li>
           </ul>
         </nav>
@@ -337,6 +341,8 @@ const App = () => {
           <Route path="/h2h" element={<H2H />} />
           <Route path="/competitions" element={<CompetitionManager />} />
           <Route path="/player/:playerName" element={<PlayerMatches />} />
+          <Route path="/stats" element={<Stats year={year} />} />
+
 
         </Routes>
       </div>
