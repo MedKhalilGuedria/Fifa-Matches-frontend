@@ -89,7 +89,12 @@ const Stats = ({ year }) => {
     const bestAttack = Object.keys(playerStats).reduce((a, b) => (playerStats[a].goalsFor > playerStats[b].goalsFor ? a : b), '');
     const bestDefense = Object.keys(playerStats).filter(player => playerStats[player].matches > 9).reduce((a, b) => (playerStats[a].goalsAgainst < playerStats[b].goalsAgainst ? a : b), '');
     const worstAttack = Object.keys(playerStats).filter(player => playerStats[player].matches > 9).reduce((a, b) => (playerStats[a].goalsFor < playerStats[b].goalsFor ? a : b), '');
-
+// Only consider players who have played more than 9 matches for Best Defense and Worst Attack
+  
+    const worstDefense = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.goalsAgainst > playerStats[b]?.goalsAgainst ? a : b), '');
+    const mostWins = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.wins > playerStats[b]?.wins ? a : b), '');
+    const mostDraws = Object.keys(playerStats).reduce((a, b) => (playerStats[a]?.draws > playerStats[b]?.draws ? a : b), '');
+    const mostEfficientPlayer = Object.keys(playerStats).reduce((a, b) => ((playerStats[a]?.wins / playerStats[a]?.matches) > (playerStats[b]?.wins / playerStats[b]?.matches) ? a : b), '');
     setStats({
       totalMatches,
       totalGoals,
@@ -100,6 +105,9 @@ const Stats = ({ year }) => {
       highestScoringMatch,
       lowestScoringMatch,
       bestAttack,
+      mostWins,
+      mostDraws,
+      mostEfficientPlayer,
       bestDefense,
       worstAttack,
       worstDefense,
