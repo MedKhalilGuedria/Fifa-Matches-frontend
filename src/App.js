@@ -144,7 +144,7 @@ const App = () => {
               <Link to="/competitions">Competitions</Link>
             </li>
             <li>
-              <Link to="/stats">Competitions</Link>
+              <Link to="/stats">Stats</Link>
             </li>
           </ul>
         </nav>
