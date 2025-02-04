@@ -44,7 +44,7 @@ const PlayerMatches = () => {
     <div className="player-matches-container">
       <h1>{playerName}'s Matches</h1>
       <Link to="/" className="back-button">Back to Home</Link>
-      <div className="matches-list">
+      <div className="matches-listt">
         {matches.length === 0 ? (
           <p>No matches found for {playerName}.</p>
         ) : (
@@ -52,10 +52,10 @@ const PlayerMatches = () => {
             const result = getMatchResult(match);
             return (
               <div key={match._id} className="match-cardd">
-                <div className="match-details">
-                  <span className="player">{match.player1}</span>
+                <div className="match-detailss">
+                  <span className="playerr">{match.player1}</span>
                   <span className="vs">vs</span>
-                  <span className="player">{match.player2}</span>
+                  <span className="playerr">{match.player2}</span>
                 </div>
                 <div className="match-scores">
                   <span className="score">{match.score1}</span>

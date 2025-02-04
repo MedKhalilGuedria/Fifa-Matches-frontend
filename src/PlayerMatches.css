@@ -27,7 +27,7 @@
   background-color: #2980b9;
 }
 
-.matches-list {
+.matches-listt {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -46,7 +46,7 @@
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.match-details {
+.match-detailss {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +54,7 @@
   margin-bottom: 1rem;
 }
 
-.player {
+.playerr {
   font-size: 1.1rem;
   font-weight: 500;
   color: #2c3e50;
