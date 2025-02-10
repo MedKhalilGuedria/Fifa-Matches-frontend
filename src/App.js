@@ -6,6 +6,7 @@ import CompetitionManager from './CompetitionManager';
 import './App.css';
 import PlayerMatches from './PlayerMatches';
 import Stats from './Stats';
+import TournamentManager from './TournamentManager'; // New component
 
 const App = () => {
   const [matches, setMatches] = useState([]);
