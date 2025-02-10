@@ -53,8 +53,21 @@ const TournamentManager = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Ensure number of participants is a power of 2
+    const participants = newTournament.participants;
+    const participantCount = participants.length;
+    const powerOfTwo = Math.pow(2, Math.ceil(Math.log2(participantCount)));
+    
+    const paddedParticipants = [...participants];
+    while (paddedParticipants.length < powerOfTwo) {
+      paddedParticipants.push('BYE');
+    }
+
     try {
-      await axios.post('https://fifa-matches-results.onrender.com/api/tournaments', newTournament);
+      await axios.post('https://fifa-matches-results.onrender.com/api/tournaments', {
+        ...newTournament,
+        participants: paddedParticipants
+      });
       setNewTournament({ name: '', participants: [] });
       fetchTournaments();
     } catch (error) {
@@ -63,7 +76,7 @@ const TournamentManager = () => {
   };
 
   const handleMatchClick = (match, tournamentId) => {
-    if (match.player1 && match.player2 && match.status !== 'completed') {
+    if (match.player1 && match.player2 && match.status !== 'completed' && match.player1 !== 'BYE' && match.player2 !== 'BYE') {
       setSelectedMatch({ ...match, tournamentId });
       setMatchResult({ score1: '', score2: '' });
     }
@@ -72,16 +85,27 @@ const TournamentManager = () => {
   const handleResultSubmit = async (e) => {
     e.preventDefault();
     try {
-      const winner = parseInt(matchResult.score1) > parseInt(matchResult.score2) 
-        ? selectedMatch.player1 
-        : selectedMatch.player2;
-
+      const score1 = parseInt(matchResult.score1);
+      const score2 = parseInt(matchResult.score2);
+      
+      let winner, isDraw = false;
+      if (score1 > score2) {
+        winner = selectedMatch.player1;
+      } else if (score2 > score1) {
+        winner = selectedMatch.player2;
+      } else {
+        // Handle draw scenario
+        isDraw = true;
+        winner = Math.random() < 0.5 ? selectedMatch.player1 : selectedMatch.player2;
+      }
+      
       await axios.put(
         `https://fifa-matches-results.onrender.com/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
         { 
-          score1: parseInt(matchResult.score1), 
-          score2: parseInt(matchResult.score2), 
-          winner 
+          score1, 
+          score2, 
+          winner,
+          isDraw
         }
       );
       setSelectedMatch(null);
@@ -92,12 +116,15 @@ const TournamentManager = () => {
   };
 
   const getRoundName = (round, totalRounds) => {
-    if (round === totalRounds) return 'Final';
-    if (round === totalRounds - 1) return 'Semi-Finals';
-    if (round === totalRounds - 2) return 'Quarter-Finals';
-    if (round === totalRounds - 3) return 'Round of 16';
-    if (round === totalRounds - 4) return 'Round of 32';
-    return `Round ${round}`;
+    const roundMap = {
+      1: 'Final',
+      2: 'Semi-Finals',
+      3: 'Quarter-Finals',
+      4: 'Round of 16',
+      5: 'Round of 32',
+      6: 'Round of 64'
+    };
+    return roundMap[totalRounds - round + 1] || `Round ${round}`;
   };
 
   return (
@@ -137,36 +164,42 @@ const TournamentManager = () => {
           <div key={tournament._id} className="tournament">
             <h2>{tournament.name}</h2>
             <div className="bracket">
-  {Array.from(new Set(tournament.matches.map(m => m.round)))
-    .sort((a, b) => a - b)
-    .map((round, index, allRounds) => (
-      <div key={round} className="round">
-        <h3>{getRoundName(round, allRounds.length)}</h3>
-        <div className="matches">
-          {tournament.matches
-            .filter(match => match.round === round)
-            .map((match, i) => (
-              <div
-                key={match._id}
-                className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
-                onClick={() => handleMatchClick(match, tournament._id)}
-              >
-                <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
-                  {match.player1 || 'TBD'}
-                  {match.status === 'completed' && <span className="score">{match.score1}</span>}
-                </div>
-                <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
-                  {match.player2 || 'TBD'}
-                  {match.status === 'completed' && <span className="score">{match.score2}</span>}
-                </div>
-                {/* Connection lines */}
-                {index < allRounds.length - 1 && <div className="connector"></div>}
-              </div>
-            ))}
-        </div>
-      </div>
-    ))}
-</div>
+              {Array.from(new Set(tournament.matches.map(m => m.round)))
+                .sort((a, b) => a - b)
+                .map((round, index, allRounds) => (
+                  <div key={round} className="round">
+                    <h3>{getRoundName(round, allRounds.length)}</h3>
+                    <div className="matches">
+                      {tournament.matches
+                        .filter(match => match.round === round)
+                        .map((match, i) => {
+                          const isDraw = match.status === 'completed' && match.score1 === match.score2;
+                          return (
+                            <div
+                              key={match._id}
+                              className={`match 
+                                ${match.status} 
+                                ${(!match.player1 || !match.player2 || match.player1 === 'BYE' || match.player2 === 'BYE') ? 'pending' : ''}
+                                ${isDraw ? 'draw' : ''}`}
+                              onClick={() => handleMatchClick(match, tournament._id)}
+                            >
+                              <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
+                                {match.player1 === 'BYE' ? 'BYE' : match.player1 || 'TBD'}
+                                {match.status === 'completed' && <span className="score">{match.score1}</span>}
+                              </div>
+                              <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
+                                {match.player2 === 'BYE' ? 'BYE' : match.player2 || 'TBD'}
+                                {match.status === 'completed' && <span className="score">{match.score2}</span>}
+                              </div>
+                              {isDraw && <div className="draw-indicator">Draw</div>}
+                              {index < allRounds.length - 1 && <div className="connector"></div>}
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         ))}
       </div>

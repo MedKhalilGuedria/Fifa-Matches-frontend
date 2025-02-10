@@ -227,3 +227,26 @@
   .button-group button:hover {
     opacity: 0.9;
   }
+
+
+  .match.draw .player {
+    background: repeating-linear-gradient(
+      45deg,
+      #f8f9fa,
+      #f8f9fa 10px,
+      #ffe4b5 10px,
+      #ffe4b5 20px
+    );
+  }
+  
+  .draw-indicator {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffc107;
+    color: black;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.7em;
+  }
