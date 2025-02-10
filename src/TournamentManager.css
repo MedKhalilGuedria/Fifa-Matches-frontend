@@ -1,4 +1,235 @@
-.match.draw .player {
+.tournament-manager {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .create-tournament {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .create-tournament form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+  }
+  
+  .create-tournament input,
+  .create-tournament select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .create-tournament select[multiple] {
+    height: 150px;
+  }
+  
+  .create-tournament button {
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .create-tournament button:hover {
+    background: #0056b3;
+  }
+  
+  .tournaments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .tournament {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .bracket {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    padding: 20px 0;
+    position: relative;
+  }
+  
+  .round {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    min-width: 250px;
+    position: relative;
+  }
+  
+  .matches {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: relative;
+  }
+  
+  .match {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+  
+  .match:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .match.completed {
+    background: #f8f9fa;
+  }
+  
+  .match.pending {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .match::before,
+  .match::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    width: 40px;
+    height: 2px;
+    background: #ddd;
+  }
+  
+  .match::before {
+    top: 25%;
+  }
+  
+  .match::after {
+    bottom: 25%;
+  }
+  
+  .connector {
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    background: #ddd;
+    right: -40px;
+    top: 50%;
+  }
+  
+  .connector::before,
+  .connector::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: #ddd;
+  }
+  
+  .connector::before {
+    top: -10px;
+    left: 0;
+  }
+  
+  .connector::after {
+    bottom: -10px;
+    left: 0;
+  }
+  
+  .match .player {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .match .player.winner {
+    background: #e8f4ff;
+    font-weight: bold;
+  }
+  
+  .match .score {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    min-width: 300px;
+  }
+  
+  .input-group {
+    margin-bottom: 15px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .button-group button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button-group button[type="submit"] {
+    background: #007bff;
+    color: white;
+  }
+  
+  .button-group button[type="button"] {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .button-group button:hover {
+    opacity: 0.9;
+  }
+
+
+  .match.draw .player {
     background: repeating-linear-gradient(
       45deg,
       #f8f9fa,
