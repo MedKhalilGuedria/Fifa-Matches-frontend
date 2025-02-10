@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './TournamentManager.css'; // Add CSS for styling
+import './TournamentManager.css';
 
 const TournamentManager = () => {
   const [tournaments, setTournaments] = useState([]);
@@ -62,24 +62,40 @@ const TournamentManager = () => {
     }
   };
 
-  const handleMatchClick = (match) => {
-    setSelectedMatch(match);
-    setMatchResult({ score1: '', score2: '' });
+  const handleMatchClick = (match, tournamentId) => {
+    if (match.player1 && match.player2 && match.status !== 'completed') {
+      setSelectedMatch({ ...match, tournamentId });
+      setMatchResult({ score1: '', score2: '' });
+    }
   };
 
   const handleResultSubmit = async (e) => {
     e.preventDefault();
     try {
-      const winner = matchResult.score1 > matchResult.score2 ? selectedMatch.player1 : selectedMatch.player2;
+      const winner = parseInt(matchResult.score1) > parseInt(matchResult.score2) 
+        ? selectedMatch.player1 
+        : selectedMatch.player2;
+      
       await axios.put(
         `https://fifa-matches-results.onrender.com/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
-        { score1: matchResult.score1, score2: matchResult.score2, winner }
+        { 
+          score1: parseInt(matchResult.score1), 
+          score2: parseInt(matchResult.score2), 
+          winner 
+        }
       );
       setSelectedMatch(null);
       fetchTournaments();
     } catch (error) {
       console.error('Error updating match result:', error);
     }
+  };
+
+  const getRoundName = (round, totalRounds) => {
+    if (round === totalRounds) return 'Final';
+    if (round === totalRounds - 1) return 'Semi-Finals';
+    if (round === totalRounds - 2) return 'Quarter-Finals';
+    return `Round ${round}`;
   };
 
   return (
@@ -114,30 +130,34 @@ const TournamentManager = () => {
         </form>
       </div>
 
-      <div className="tournament-list">
-        <h2>Tournaments</h2>
+      <div className="tournaments-list">
         {tournaments.map((tournament) => (
           <div key={tournament._id} className="tournament">
-            <h3>{tournament.name}</h3>
+            <h2>{tournament.name}</h2>
             <div className="bracket">
-              {tournament.matches.map((match) => (
-                <div
-                  key={match._id}
-                  className={`match ${match.status}`}
-                  onClick={() => handleMatchClick({ ...match, tournamentId: tournament._id })}
-                >
-                  <div className="players">
-                    <span>{match.player1}</span>
-                    <span>vs</span>
-                    <span>{match.player2 || 'BYE'}</span>
+              {Array.from(new Set(tournament.matches.map(m => m.round))).sort((a, b) => a - b).map(round => (
+                <div key={round} className="round">
+                  <h3>{getRoundName(round, Math.ceil(Math.log2(tournament.participants.length)))}</h3>
+                  <div className="matches">
+                    {tournament.matches
+                      .filter(match => match.round === round)
+                      .map((match, index) => (
+                        <div
+                          key={match._id}
+                          className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
+                          onClick={() => handleMatchClick(match, tournament._id)}
+                        >
+                          <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
+                            {match.player1 || 'TBD'}
+                            {match.status === 'completed' && <span className="score">{match.score1}</span>}
+                          </div>
+                          <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
+                            {match.player2 || 'TBD'}
+                            {match.status === 'completed' && <span className="score">{match.score2}</span>}
+                          </div>
+                        </div>
+                    ))}
                   </div>
-                  {match.status === 'completed' && (
-                    <div className="result">
-                      <span>{match.score1}</span>
-                      <span>-</span>
-                      <span>{match.score2}</span>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -150,22 +170,34 @@ const TournamentManager = () => {
           <div className="modal-content">
             <h3>Set Match Result</h3>
             <form onSubmit={handleResultSubmit}>
-              <input
-                type="number"
-                placeholder={`${selectedMatch.player1} Score`}
-                value={matchResult.score1}
-                onChange={(e) => setMatchResult({ ...matchResult, score1: e.target.value })}
-                required
-              />
-              <input
-                type="number"
-                placeholder={`${selectedMatch.player2} Score`}
-                value={matchResult.score2}
-                onChange={(e) => setMatchResult({ ...matchResult, score2: e.target.value })}
-                required
-              />
-              <button type="submit">Submit</button>
-              <button type="button" onClick={() => setSelectedMatch(null)}>Cancel</button>
+              <div className="input-group">
+                <label>
+                  {selectedMatch.player1} Score:
+                  <input
+                    type="number"
+                    min="0"
+                    value={matchResult.score1}
+                    onChange={(e) => setMatchResult({ ...matchResult, score1: e.target.value })}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="input-group">
+                <label>
+                  {selectedMatch.player2} Score:
+                  <input
+                    type="number"
+                    min="0"
+                    value={matchResult.score2}
+                    onChange={(e) => setMatchResult({ ...matchResult, score2: e.target.value })}
+                    required
+                  />
+                </label>
+              </div>
+              <div className="button-group">
+                <button type="submit">Submit</button>
+                <button type="button" onClick={() => setSelectedMatch(null)}>Cancel</button>
+              </div>
             </form>
           </div>
         </div>
