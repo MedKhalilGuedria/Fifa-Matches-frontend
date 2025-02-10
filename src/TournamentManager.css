@@ -71,6 +71,12 @@
     position: relative;
   }
   
+  .round h3 {
+    text-align: center;
+    color: #666;
+    margin: 0;
+  }
+  
   .matches {
     display: flex;
     flex-direction: column;
@@ -147,7 +153,6 @@
     bottom: -10px;
     left: 0;
   }
-  
   .match .player {
     display: flex;
     justify-content: space-between;
