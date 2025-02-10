@@ -71,12 +71,6 @@
     position: relative;
   }
   
-  .round h3 {
-    text-align: center;
-    color: #666;
-    margin: 0;
-  }
-  
   .matches {
     display: flex;
     flex-direction: column;
