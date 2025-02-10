@@ -146,6 +146,10 @@ const App = () => {
             <li>
               <Link to="/stats">Stats</Link>
             </li>
+
+            <li>
+              <Link to="/tournaments">Tournaments</Link> 
+            </li>
           </ul>
         </nav>
 
@@ -342,7 +346,7 @@ const App = () => {
           <Route path="/competitions" element={<CompetitionManager />} />
           <Route path="/player/:playerName" element={<PlayerMatches />} />
           <Route path="/stats" element={<Stats year={year} />} />
-
+          <Route path="/tournaments" element={<TournamentManager />} /> {/* New route */}
 
         </Routes>
       </div>
