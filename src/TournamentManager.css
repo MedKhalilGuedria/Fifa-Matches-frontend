@@ -1,3 +1,4 @@
+/* Tournament Manager Styles */
 .tournament-manager {
     padding: 20px;
     max-width: 1200px;
@@ -55,9 +56,22 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
- 
+  /* Bracket Styling */
+  .bracket {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    padding: 20px 0;
+    position: relative;
+  }
   
-  
+  .round {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    min-width: 250px;
+    position: relative;
+  }
   
   .round h3 {
     text-align: center;
@@ -69,9 +83,19 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    position: relative;
   }
   
- 
+  .match {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
   
   .match:hover {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -86,6 +110,7 @@
     cursor: not-allowed;
   }
   
+  /* Connecting Lines for Bracket */
   .match::before,
   .match::after {
     content: '';
@@ -102,6 +127,34 @@
   
   .match::after {
     bottom: 25%;
+  }
+  
+  .connector {
+    position: absolute;
+    width: 40px;
+    height: 2px;
+    background: #ddd;
+    right: -40px;
+    top: 50%;
+  }
+  
+  .connector::before,
+  .connector::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: #ddd;
+  }
+  
+  .connector::before {
+    top: -10px;
+    left: 0;
+  }
+  
+  .connector::after {
+    bottom: -10px;
+    left: 0;
   }
   
   .match .player {
@@ -121,6 +174,7 @@
     color: #007bff;
   }
   
+  /* Modal Styling */
   .modal {
     position: fixed;
     top: 0;
@@ -183,62 +237,4 @@
   .button-group button:hover {
     opacity: 0.9;
   }
-
-
-  .bracket {
-    display: flex;
-    gap: 40px;
-    overflow-x: auto;
-    padding: 20px 0;
-    position: relative;
-  }
   
-  .round {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    min-width: 250px;
-    position: relative;
-  }
-  
-  .match {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 15px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .connector {
-    position: absolute;
-    width: 40px;
-    height: 2px;
-    background: #ddd;
-    right: -40px;
-    top: 50%;
-  }
-  
-  .connector::before,
-  .connector::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 20px;
-    background: #ddd;
-  }
-  
-  .connector::before {
-    top: -10px;
-    left: 0;
-  }
-  
-  .connector::after {
-    bottom: -10px;
-    left: 0;
-  }
