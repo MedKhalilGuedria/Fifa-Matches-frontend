@@ -163,7 +163,7 @@ const TournamentManager = () => {
                             onClick={() => handleMatchClick(match, tournament._id)}
                             style={{
                               marginTop: roundIndex > 0 && matchIndex % 2 === 1 ? '60px' : '0',
-                              animation: animateBrackets ? `fadeIn 0.5s ease ${matchIndex * 0.2}s forwards` : 'none',
+                              animation: animateBrackets ? `fadeIn 5s ease ${matchIndex * 0.2}s forwards` : 'none',
                               opacity: animateBrackets ? 0 : 1
                             }}
                           >
