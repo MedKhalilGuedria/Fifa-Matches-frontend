@@ -151,7 +151,8 @@ const TournamentManager = () => {
                 className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
                 onClick={() => handleMatchClick(match, tournament._id)}
                 style={{
-                  marginTop: roundIndex > 0 ? `${(matchIndex % 2 === 0 ? 40 : -40)}px` : '0',
+                  // Add margin to center next round matches between previous ones
+                  marginTop: roundIndex > 0 && matchIndex % 2 === 1 ? '60px' : '0',
                 }}
               >
                 <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
@@ -163,7 +164,7 @@ const TournamentManager = () => {
                   {match.status === 'completed' && <span className="score">{match.score2}</span>}
                 </div>
 
-                {/* Connector only if not in final round */}
+                {/* Connector line to the next round */}
                 {roundIndex < allRounds.length - 1 && (
                   <div className="connector"></div>
                 )}

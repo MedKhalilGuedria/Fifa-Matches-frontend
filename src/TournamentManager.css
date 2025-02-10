@@ -57,25 +57,20 @@
   
   .bracket {
     display: flex;
-    gap: 40px;
+    gap: 60px; /* Increase gap between rounds */
     overflow-x: auto;
     padding: 20px 0;
-    position: relative;
   }
   
   .round {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center matches vertically */
-    gap: 80px; /* Increased gap for better spacing */
+    gap: 60px; /* Space between matches in the same round */
+    position: relative;
     min-width: 250px;
-    position: relative;
   }
   
-  .matches {
-    position: relative;
-  }
-  
+  /* Match Card */
   .match {
     background: white;
     border: 1px solid #ddd;
@@ -85,20 +80,40 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
+    min-height: 80px; /* Ensure consistent height */
   }
   
-  /* Connector lines */
+  /* Connector Line */
+  .connector {
+    position: absolute;
+    width: 60px;
+    height: 2px;
+    background: #ddd;
+    top: 50%;
+    left: 100%;
+  }
+  
+  /* Vertical Lines for connecting previous round matches */
   .match::before,
   .match::after {
     content: '';
     position: absolute;
     width: 2px;
-    height: 50%;
+    height: 30px;
     background: #ddd;
     left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
   }
+  
+  /* Top vertical connector */
+  .match::before {
+    top: -30px;
+  }
+  
+  /* Bottom vertical connector */
+  .match::after {
+    bottom: -30px;
+  }
+  
   
   .match::before {
     border-top: 2px solid #ddd;
