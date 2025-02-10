@@ -11,13 +11,12 @@ const TournamentManager = () => {
   const [players, setPlayers] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [matchResult, setMatchResult] = useState({ score1: '', score2: '' });
-  
+  const [animateBrackets, setAnimateBrackets] = useState(false); // New state for animation control
+
   useEffect(() => {
     fetchTournaments();
     fetchPlayers();
   }, []);
-
-  
 
   const fetchTournaments = async () => {
     try {
@@ -102,6 +101,10 @@ const TournamentManager = () => {
     return `Round ${round}`;
   };
 
+  const toggleAnimation = () => {
+    setAnimateBrackets(!animateBrackets);
+  };
+
   return (
     <div className="tournament-manager">
       <h1>Tournament Manager</h1>
@@ -134,48 +137,54 @@ const TournamentManager = () => {
         </form>
       </div>
 
+      <div className="animation-toggle">
+        <button onClick={toggleAnimation}>
+          {animateBrackets ? 'Disable Animation' : 'Enable Animation'}
+        </button>
+      </div>
+
       <div className="tournaments-list">
         {tournaments.map((tournament) => (
           <div key={tournament._id} className="tournament">
             <h2>{tournament.name}</h2>
             <div className="bracket">
-  {Array.from(new Set(tournament.matches.map(m => m.round)))
-    .sort((a, b) => a - b)
-    .map((round, roundIndex, allRounds) => (
-      <div key={round} className="round">
-        <h3>{getRoundName(round, allRounds.length)}</h3>
-        <div className="matches">
-          {tournament.matches
-            .filter(match => match.round === round)
-            .map((match, matchIndex) => (
-              <div
-                key={match._id}
-                className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
-                onClick={() => handleMatchClick(match, tournament._id)}
-                style={{
-                  // Add margin to center next round matches between previous ones
-                  marginTop: roundIndex > 0 && matchIndex % 2 === 1 ? '60px' : '0',
-                }}
-              >
-                <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
-                  {match.player1 || 'TBD'}
-                  {match.status === 'completed' && <span className="score">{match.score1}</span>}
-                </div>
-                <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
-                  {match.player2 || 'TBD'}
-                  {match.status === 'completed' && <span className="score">{match.score2}</span>}
-                </div>
+              {Array.from(new Set(tournament.matches.map(m => m.round)))
+                .sort((a, b) => a - b)
+                .map((round, roundIndex, allRounds) => (
+                  <div key={round} className="round">
+                    <h3>{getRoundName(round, allRounds.length)}</h3>
+                    <div className="matches">
+                      {tournament.matches
+                        .filter(match => match.round === round)
+                        .map((match, matchIndex) => (
+                          <div
+                            key={match._id}
+                            className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
+                            onClick={() => handleMatchClick(match, tournament._id)}
+                            style={{
+                              marginTop: roundIndex > 0 && matchIndex % 2 === 1 ? '60px' : '0',
+                              animation: animateBrackets ? `fadeIn 0.5s ease ${matchIndex * 0.2}s forwards` : 'none',
+                              opacity: animateBrackets ? 0 : 1
+                            }}
+                          >
+                            <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
+                              {match.player1 || 'TBD'}
+                              {match.status === 'completed' && <span className="score">{match.score1}</span>}
+                            </div>
+                            <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
+                              {match.player2 || 'TBD'}
+                              {match.status === 'completed' && <span className="score">{match.score2}</span>}
+                            </div>
 
-                {/* Connector line to the next round */}
-                {roundIndex < allRounds.length - 1 && (
-                  <div className="connector"></div>
-                )}
-              </div>
-            ))}
-        </div>
-      </div>
-    ))}
-</div>
+                            {roundIndex < allRounds.length - 1 && (
+                              <div className="connector"></div>
+                            )}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         ))}
       </div>
