@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './TournamentManager.css'; // Add CSS for styling
 
 const TournamentManager = () => {
   const [tournaments, setTournaments] = useState([]);
@@ -8,6 +9,8 @@ const TournamentManager = () => {
     participants: []
   });
   const [players, setPlayers] = useState([]);
+  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [matchResult, setMatchResult] = useState({ score1: '', score2: '' });
 
   useEffect(() => {
     fetchTournaments();
@@ -59,51 +62,114 @@ const TournamentManager = () => {
     }
   };
 
+  const handleMatchClick = (match) => {
+    setSelectedMatch(match);
+    setMatchResult({ score1: '', score2: '' });
+  };
+
+  const handleResultSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const winner = matchResult.score1 > matchResult.score2 ? selectedMatch.player1 : selectedMatch.player2;
+      await axios.put(
+        `https://fifa-matches-results.onrender.com/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
+        { score1: matchResult.score1, score2: matchResult.score2, winner }
+      );
+      setSelectedMatch(null);
+      fetchTournaments();
+    } catch (error) {
+      console.error('Error updating match result:', error);
+    }
+  };
+
   return (
-    <div>
+    <div className="tournament-manager">
       <h1>Tournament Manager</h1>
 
-      <h2>Create New Tournament</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Tournament Name"
-          value={newTournament.name}
-          onChange={handleInputChange}
-          required
-        />
-        <select
-          name="participants"
-          multiple
-          value={newTournament.participants}
-          onChange={handleParticipantChange}
-          required
-        >
-          {players.map((player) => (
-            <option key={player._id} value={player.name}>
-              {player.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit">Create Tournament</button>
-      </form>
+      <div className="create-tournament">
+        <h2>Create New Tournament</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Tournament Name"
+            value={newTournament.name}
+            onChange={handleInputChange}
+            required
+          />
+          <select
+            name="participants"
+            multiple
+            value={newTournament.participants}
+            onChange={handleParticipantChange}
+            required
+          >
+            {players.map((player) => (
+              <option key={player._id} value={player.name}>
+                {player.name}
+              </option>
+            ))}
+          </select>
+          <button type="submit">Create Tournament</button>
+        </form>
+      </div>
 
-      <h2>Tournaments</h2>
-      <ul>
+      <div className="tournament-list">
+        <h2>Tournaments</h2>
         {tournaments.map((tournament) => (
-          <li key={tournament._id}>
+          <div key={tournament._id} className="tournament">
             <h3>{tournament.name}</h3>
-            <ul>
+            <div className="bracket">
               {tournament.matches.map((match) => (
-                <li key={match._id}>
-                  {match.player1} vs {match.player2} - Winner: {match.winner || 'TBD'}
-                </li>
+                <div
+                  key={match._id}
+                  className={`match ${match.status}`}
+                  onClick={() => handleMatchClick({ ...match, tournamentId: tournament._id })}
+                >
+                  <div className="players">
+                    <span>{match.player1}</span>
+                    <span>vs</span>
+                    <span>{match.player2 || 'BYE'}</span>
+                  </div>
+                  {match.status === 'completed' && (
+                    <div className="result">
+                      <span>{match.score1}</span>
+                      <span>-</span>
+                      <span>{match.score2}</span>
+                    </div>
+                  )}
+                </div>
               ))}
-            </ul>
-          </li>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
+
+      {selectedMatch && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Set Match Result</h3>
+            <form onSubmit={handleResultSubmit}>
+              <input
+                type="number"
+                placeholder={`${selectedMatch.player1} Score`}
+                value={matchResult.score1}
+                onChange={(e) => setMatchResult({ ...matchResult, score1: e.target.value })}
+                required
+              />
+              <input
+                type="number"
+                placeholder={`${selectedMatch.player2} Score`}
+                value={matchResult.score2}
+                onChange={(e) => setMatchResult({ ...matchResult, score2: e.target.value })}
+                required
+              />
+              <button type="submit">Submit</button>
+              <button type="button" onClick={() => setSelectedMatch(null)}>Cancel</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

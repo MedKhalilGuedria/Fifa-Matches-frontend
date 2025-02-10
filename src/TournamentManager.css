@@ -1,0 +1,71 @@
+.tournament-manager {
+    padding: 20px;
+  }
+  
+  .create-tournament {
+    margin-bottom: 20px;
+  }
+  
+  .tournament-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .tournament {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .bracket {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .match {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .match.completed {
+    background-color: #e0f7fa;
+  }
+  
+  .match.pending {
+    background-color: #fff3e0;
+  }
+  
+  .players {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .result {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+  }
