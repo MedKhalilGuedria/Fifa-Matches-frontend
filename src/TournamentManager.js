@@ -75,7 +75,7 @@ const TournamentManager = () => {
       const winner = parseInt(matchResult.score1) > parseInt(matchResult.score2) 
         ? selectedMatch.player1 
         : selectedMatch.player2;
-      
+
       await axios.put(
         `https://fifa-matches-results.onrender.com/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
         { 
@@ -92,11 +92,12 @@ const TournamentManager = () => {
   };
 
   const getRoundName = (round, totalRounds) => {
-    if (round === totalRounds) return 'Final';
-    if (round === totalRounds - 1) return 'Semi-Finals';
-    if (round === totalRounds - 2) return 'Quarter-Finals';
-    if (round === totalRounds - 3) return 'Round of 16';
-    if (round === totalRounds - 4) return 'Round of 32';
+    const rounds = Math.ceil(Math.log2(players.length));
+    if (round === rounds) return 'Final';
+    if (round === rounds - 1) return 'Semi-Finals';
+    if (round === rounds - 2) return 'Quarter-Finals';
+    if (round === rounds - 3) return 'Round of 16';
+    if (round === rounds - 4) return 'Round of 32';
     return `Round ${round}`;
   };
 
@@ -137,33 +138,33 @@ const TournamentManager = () => {
           <div key={tournament._id} className="tournament">
             <h2>{tournament.name}</h2>
             <div className="bracket">
-            {Array.from(new Set(tournament.matches.map(m => m.round)))
-  .sort((a, b) => a - b)
-  .map((round, index, allRounds) => (
-    <div key={round} className="round">
-      <h3>{getRoundName(round, allRounds.length)}</h3>
-      <div className="matches">
-        {tournament.matches
-          .filter(match => match.round === round)
-          .map((match) => (
-            <div
-              key={match._id}
-              className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
-              onClick={() => handleMatchClick(match, tournament._id)}
-            >
-              <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
-                {match.player1 || 'TBD'}
-                {match.status === 'completed' && <span className="score">{match.score1}</span>}
-              </div>
-              <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
-                {match.player2 || 'TBD'}
-                {match.status === 'completed' && <span className="score">{match.score2}</span>}
-              </div>
-            </div>
-          ))}
-      </div>
-    </div>
-))}
+              {Array.from(new Set(tournament.matches.map(m => m.round)))
+                .sort((a, b) => a - b)
+                .map((round, index, allRounds) => (
+                  <div key={round} className="round">
+                    <h3>{getRoundName(round, allRounds.length)}</h3>
+                    <div className="matches">
+                      {tournament.matches
+                        .filter(match => match.round === round)
+                        .map((match) => (
+                          <div
+                            key={match._id}
+                            className={`match ${match.status} ${(!match.player1 || !match.player2) ? 'pending' : ''}`}
+                            onClick={() => handleMatchClick(match, tournament._id)}
+                          >
+                            <div className={`player ${match.winner === match.player1 ? 'winner' : ''}`}>
+                              {match.player1 || 'TBD'}
+                              {match.status === 'completed' && <span className="score">{match.score1}</span>}
+                            </div>
+                            <div className={`player ${match.winner === match.player2 ? 'winner' : ''}`}>
+                              {match.player2 || 'TBD'}
+                              {match.status === 'completed' && <span className="score">{match.score2}</span>}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
         ))}
