@@ -11,11 +11,23 @@ const TournamentManager = () => {
   const [players, setPlayers] = useState([]);
   const [selectedMatch, setSelectedMatch] = useState(null);
   const [matchResult, setMatchResult] = useState({ score1: '', score2: '' });
+  const [playerClasses, setPlayerClasses] = useState([]);
 
   useEffect(() => {
     fetchTournaments();
     fetchPlayers();
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const newClasses = players.map((_, index) => {
+        return index % 2 === 0 ? "animating" : "";
+      });
+      setPlayerClasses(newClasses);
+    }, 500); // Delay animation start for a smoother effect
+
+    return () => clearTimeout(timer);
+  }, [players]);
 
   const fetchTournaments = async () => {
     try {
@@ -122,11 +134,11 @@ const TournamentManager = () => {
             onChange={handleParticipantChange}
             required
           >
-            {players.map((player) => (
-              <option key={player._id} value={player.name}>
-                {player.name}
-              </option>
-            ))}
+             {players.map((player, index) => (
+        <div key={index} className={`match`}>
+          <div className={`player ${playerClasses[index]}`}>{player.name}</div>
+        </div>
+      ))}
           </select>
           <button type="submit">Create Tournament</button>
         </form>

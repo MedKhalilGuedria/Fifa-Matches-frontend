@@ -258,3 +258,38 @@
     border-radius: 3px;
     font-size: 0.7em;
   }
+
+
+  /* Add animation for entering the draw */
+@keyframes slideIn {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Apply animation */
+  .match .player.animating {
+    animation: slideIn 0.5s ease-out forwards;
+  }
+  
+  /* Optionally, add a slight delay for each player */
+  .match .player:nth-child(1) {
+    animation-delay: 0s;
+  }
+  
+  .match .player:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  
+  .match .player:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  
+  .match .player:nth-child(4) {
+    animation-delay: 0.9s;
+  }
