@@ -19,7 +19,7 @@ const TournamentManager = () => {
 
   const fetchTournaments = async () => {
     try {
-      const response = await axios.get('/api/tournaments');
+      const response = await axios.get('https://fifa-matches-results.onrender.com/api/tournaments');
       setTournaments(response.data);
     } catch (error) {
       console.error('Error fetching tournaments:', error);
@@ -28,7 +28,7 @@ const TournamentManager = () => {
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.get('/api/players');
+      const response = await axios.get('https://fifa-matches-results.onrender.com/api/players');
       setPlayers(response.data);
     } catch (error) {
       console.error('Error fetching players:', error);
@@ -54,7 +54,7 @@ const TournamentManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/tournaments', newTournament);
+      await axios.post('https://fifa-matches-results.onrender.com/api/tournaments', newTournament);
       setNewTournament({ name: '', participants: [] });
       fetchTournaments();
     } catch (error) {
@@ -77,7 +77,7 @@ const TournamentManager = () => {
         : selectedMatch.player2;
       
       await axios.put(
-        `/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
+        `https://fifa-matches-results.onrender.com/api/tournaments/${selectedMatch.tournamentId}/matches/${selectedMatch._id}`,
         { 
           score1: parseInt(matchResult.score1), 
           score2: parseInt(matchResult.score2), 
