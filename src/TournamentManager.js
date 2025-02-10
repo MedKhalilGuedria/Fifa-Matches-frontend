@@ -92,10 +92,14 @@ const TournamentManager = () => {
   };
 
   const getRoundName = (round, totalRounds) => {
-  const roundNames = ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"];
-  const index = totalRounds - round;
-  return roundNames[index] || `Round ${round}`;
-};
+    if (round === totalRounds) return 'Final';
+    if (round === totalRounds - 1) return 'Semi-Finals';
+    if (round === totalRounds - 2) return 'Quarter-Finals';
+    if (round === totalRounds - 3) return 'Round of 16';
+    if (round === totalRounds - 4) return 'Round of 32';
+    return `Round ${round}`;
+  };
+  
 
   return (
     <div className="tournament-manager">
@@ -156,7 +160,7 @@ const TournamentManager = () => {
                   {match.player2 || 'TBD'}
                   {match.status === 'completed' && <span className="score">{match.score2}</span>}
                 </div>
-                {/* Draw connecting lines */}
+                {/* Connection lines */}
                 {index < allRounds.length - 1 && <div className="connector"></div>}
               </div>
             ))}
@@ -169,42 +173,42 @@ const TournamentManager = () => {
       </div>
 
       {selectedMatch && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Set Match Result</h3>
-            <form onSubmit={handleResultSubmit}>
-  <div className="input-group">
-    <label>
-      {selectedMatch.player1} Score:
-      <input
-        type="number"
-        min="0"
-        value={matchResult.score1}
-        onChange={(e) => setMatchResult({ ...matchResult, score1: e.target.value })}
-        required
-      />
-    </label>
-  </div>
-  <div className="input-group">
-    <label>
-      {selectedMatch.player2} Score:
-      <input
-        type="number"
-        min="0"
-        value={matchResult.score2}
-        onChange={(e) => setMatchResult({ ...matchResult, score2: e.target.value })}
-        required
-      />
-    </label>
-  </div>
-  <div className="button-group">
-    <button type="submit">Submit</button>
-    <button type="button" onClick={() => setSelectedMatch(null)}>Cancel</button>
-  </div>
-</form>
-          </div>
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Set Match Result</h3>
+      <form onSubmit={handleResultSubmit}>
+        <div className="input-group">
+          <label>
+            {selectedMatch.player1} Score:
+            <input
+              type="number"
+              min="0"
+              value={matchResult.score1}
+              onChange={(e) => setMatchResult({ ...matchResult, score1: e.target.value })}
+              required
+            />
+          </label>
         </div>
-      )}
+        <div className="input-group">
+          <label>
+            {selectedMatch.player2} Score:
+            <input
+              type="number"
+              min="0"
+              value={matchResult.score2}
+              onChange={(e) => setMatchResult({ ...matchResult, score2: e.target.value })}
+              required
+            />
+          </label>
+        </div>
+        <div className="button-group">
+          <button type="submit">Submit</button>
+          <button type="button" onClick={() => setSelectedMatch(null)}>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
     </div>
   );
 };

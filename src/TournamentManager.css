@@ -110,52 +110,51 @@
     cursor: not-allowed;
   }
   
-  /* Connecting Lines for Bracket */
   .match::before,
-  .match::after {
-    content: '';
-    position: absolute;
-    right: -40px;
-    width: 40px;
-    height: 2px;
-    background: #ddd;
-  }
-  
-  .match::before {
-    top: 25%;
-  }
-  
-  .match::after {
-    bottom: 25%;
-  }
-  
-  .connector {
-    position: absolute;
-    width: 40px;
-    height: 2px;
-    background: #ddd;
-    right: -40px;
-    top: 50%;
-  }
-  
-  .connector::before,
-  .connector::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 20px;
-    background: #ddd;
-  }
-  
-  .connector::before {
-    top: -10px;
-    left: 0;
-  }
-  
-  .connector::after {
-    bottom: -10px;
-    left: 0;
-  }
+.match::after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  width: 40px;
+  height: 2px;
+  background: #ddd;
+}
+
+.match::before {
+  top: 25%;
+}
+
+.match::after {
+  bottom: 25%;
+}
+
+.connector {
+  position: absolute;
+  width: 40px;
+  height: 2px;
+  background: #ddd;
+  right: -40px;
+  top: 50%;
+}
+
+.connector::before,
+.connector::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: #ddd;
+}
+
+.connector::before {
+  top: -10px;
+  left: 0;
+}
+
+.connector::after {
+  bottom: -10px;
+  left: 0;
+}
   
   .match .player {
     display: flex;
