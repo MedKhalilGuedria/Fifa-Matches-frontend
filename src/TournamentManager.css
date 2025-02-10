@@ -66,21 +66,13 @@
   .round {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    align-items: center; /* Center matches vertically */
+    gap: 80px; /* Increased gap for better spacing */
     min-width: 250px;
     position: relative;
   }
   
-  .round h3 {
-    text-align: center;
-    color: #666;
-    margin: 0;
-  }
-  
   .matches {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
     position: relative;
   }
   
@@ -95,37 +87,34 @@
     text-align: center;
   }
   
-  .match:hover {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  
-  .match.completed {
-    background: #f8f9fa;
-  }
-  
-  .match.pending {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
+  /* Connector lines */
   .match::before,
   .match::after {
     content: '';
     position: absolute;
-    right: -40px;
-    width: 40px;
-    height: 2px;
+    width: 2px;
+    height: 50%;
     background: #ddd;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
   }
   
   .match::before {
-    top: 25%;
+    border-top: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+    top: 0;
+    height: 50%;
   }
   
   .match::after {
-    bottom: 25%;
+    border-bottom: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+    bottom: 0;
+    height: 50%;
   }
   
+  /* Style for the connecting line to the next round */
   .connector {
     position: absolute;
     width: 40px;
