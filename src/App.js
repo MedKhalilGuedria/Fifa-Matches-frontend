@@ -7,6 +7,7 @@ import './App.css';
 import PlayerMatches from './PlayerMatches';
 import Stats from './Stats';
 import TournamentManager from './TournamentManager'; // New component
+import PlayerTeam from './PlayerTeam';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
@@ -150,6 +151,10 @@ const App = () => {
 
             <li>
               <Link to="/tournaments">Tournaments</Link> 
+            </li>
+
+            <li>
+              <Link to="/PT">Tournaments</Link> 
             </li>
           </ul>
         </nav>
@@ -348,6 +353,8 @@ const App = () => {
           <Route path="/player/:playerName" element={<PlayerMatches />} />
           <Route path="/stats" element={<Stats year={year} />} />
           <Route path="/tournaments" element={<TournamentManager />} /> {/* New route */}
+          <Route path="/PT" element={<PlayerTeam />} /> {/* New route */}
+
 
         </Routes>
       </div>
