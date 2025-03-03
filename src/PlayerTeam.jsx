@@ -12,8 +12,8 @@ const PlayerTeam = () => {
     score2: 0
   });
   const [teamMatchData, setTeamMatchData] = useState({
-    team1: '',
-    team2: ''
+    player1: '',
+    player2: ''
   });
 
   // Fetch teams and matches on component mount
@@ -59,15 +59,15 @@ const PlayerTeam = () => {
   };
 
   const generateTeamMatch = async () => {
-    if (!teamMatchData.team1 || !teamMatchData.team2) {
-      alert('Both team1 and team2 are required.');
+    if (!teamMatchData.player1 || !teamMatchData.player2) {
+      alert('Both player1 and player2 are required.');
       return;
     }
 
     await axios.post('https://fifa-matches-results.onrender.com/api/generate-team-match', teamMatchData);
     setTeamMatchData({
-      team1: '',
-      team2: ''
+      player1: '',
+      player2: ''
     });
     fetchMatches();
   };
@@ -116,28 +116,18 @@ const PlayerTeam = () => {
       <button onClick={createMatch}>Create Match</button>
 
       <h1>Generate Team Match</h1>
-      <select
-        value={teamMatchData.team1}
-        onChange={(e) => setTeamMatchData({ ...teamMatchData, team1: e.target.value })}
-      >
-        <option value="">Select Team 1</option>
-        {teams.map(team => (
-          <option key={team._id} value={team.name}>
-            {team.name}
-          </option>
-        ))}
-      </select>
-      <select
-        value={teamMatchData.team2}
-        onChange={(e) => setTeamMatchData({ ...teamMatchData, team2: e.target.value })}
-      >
-        <option value="">Select Team 2</option>
-        {teams.map(team => (
-          <option key={team._id} value={team.name}>
-            {team.name}
-          </option>
-        ))}
-      </select>
+      <input
+        type="text"
+        placeholder="Player 1"
+        value={teamMatchData.player1}
+        onChange={(e) => setTeamMatchData({ ...teamMatchData, player1: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Player 2"
+        value={teamMatchData.player2}
+        onChange={(e) => setTeamMatchData({ ...teamMatchData, player2: e.target.value })}
+      />
       <button onClick={generateTeamMatch}>Generate Team Match</button>
 
       <h1>Matches</h1>
@@ -146,19 +136,21 @@ const PlayerTeam = () => {
           <li key={match._id}>
             {match.team1 ? (
               <>
-                <strong>{match.team1}</strong> vs <strong>{match.team2}</strong>
+                <strong>{match.player1}</strong> (Team: {match.team1}) vs <strong>{match.player2}</strong> (Team: {match.team2})
                 <br />
-                Players: {match.team1Players?.join(', ')} vs {match.team2Players?.join(', ')}
+                Score: {match.score1} - {match.score2}
+                <br />
+                Winner: {match.winner || 'Pending'}
               </>
             ) : (
               <>
                 <strong>{match.player1}</strong> vs <strong>{match.player2}</strong>
+                <br />
+                Score: {match.score1} - {match.score2}
+                <br />
+                Winner: {match.winner || 'Pending'}
               </>
             )}
-            <br />
-            Score: {match.score1} - {match.score2}
-            <br />
-            Winner: {match.winner || 'Pending'}
           </li>
         ))}
       </ul>
