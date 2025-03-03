@@ -154,7 +154,7 @@ const App = () => {
             </li>
 
             <li>
-              <Link to="/PT">Tournaments</Link> 
+              <Link to="/PT">Player/Team</Link> 
             </li>
           </ul>
         </nav>
